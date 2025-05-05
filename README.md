@@ -1,24 +1,79 @@
 # RJ45 Tester
 
-
 ## Introducere
 
+### De la idee la prototip
 
-<!-- Care a fost ideea de la care ati pornit? -->
-Va amintiti primul lab de RL?
+Vă amintiți primul laborator de **RL**?
 
-In cadrul acestui laborator, am invatat sa fac propriul cablu UTP de Ethernet,
-pentru a conecta 2 dispozitive.
-Dupa acest proces (cunoscut sub numele de "sertizare"), trebuie sa testam
-ca conectivitatea cablului.
+Acolo am învățat cum să realizăm un **cablu UTP** pentru rețele Ethernet,
+Procesul poarta numele de **sertiazare**.
+După realizarea cablului, acesta trebuie verificat ca functioneaza corect - adică dacă are continuitate.
 
-<!-- Ce face? -->
-In cadrul proiectului de PM, eu imi propun sa realizez acest intrument de testare,
-[Tester Continuitate RJ45](https://www.optimusdigital.ro/ro/aparate-de-masura/4962-tester-rj45-rj11.html?search_query=rj45&results=22).
-Astfel deci, dispozivitul pe care l-am proiectat isi propune sa verifice.
+Testarea se face folosind un dispozitiv dedicat.
+
+De aici a pornit ideea proiectului meu: realizarea propriului meu [tester RJ45](https://www.optimusdigital.ro/ro/aparate-de-masura/4962-tester-rj45-rj11.html?search_query=rj45&results=22),
+caruia i-am adus o serie de îmbunătățiri.
+
+### Ce face dispozitivul?
+
+Dispozitivul proiectat permite testarea cablurilor de rețea de tip **RJ45**,
+oferind feedback vizual și auditiv privind corectitudinea conexiunilor dintre pini.
+
+Prin simpla apăsare a unui buton, utilizatorul poate selecta tipul de cablu testat:
+1. **Straight-through** - pentru conectarea dispozitivelor aflate pe *layere diferite* (ex: PC – switch)
+2. **Crossover** - pentru conectarea dispozitivelor de *același layer* (ex: PC - PC)
+
+După selectare, pe ecranul principal (128x160 SPI) este afișată o imagine cu ordinea corectă a firelor pentru tipul respectiv de cablu.
+
+
+
+Rolul hardware-ului in testare:
+- Se folosesc 2 socketi: unul dedicat pentru **sender**, iar celalalt pentru **receiver**
+-  Fiecare soclu RJ-45 are 8 pini
+- Fiecarui pin RJ-45 ii este asociat un LED de culoare verde care se va aprinde
+    atunci cand semnalul transmis/primit pe pinul respectiv este de 1 logic.
+- In momentul in care socket-ul de **receiver** receptioneaza **1 logic**, buzzer-ul va emite un beep scurt
+
+
+Testarea efectiva presupune 2 verificari:
+1. Se vor trimite semnale, secvential, iterand pinii **sender**-ului unul cate unul, cu mici pauze intre transmisii,
+2. urmand un test final in care se vor activa simultan toti pinii **sender**-ului
+
+
+
+Testar-ul poate fi oprită forțat, in orice moment,  prin apăsarea unui buton.
+
+In timp ce display-ul pe SPI (de rezolutie mai mare)
+afiseaza ordinea firelor in mufa RJ-45,
+LCD-ul cu modul I2C va scrie pe ecran tipul de cablu **straight-through**/**crossover**
+si indexul pinului de pe **sender** de pe care se trimit semnale
+(e.g. *"Testing pin 1...8"*), sau mesajul *"Testing all pins"*.
+
+
+### De ce este util?
+
+Consider ca folosirea ecranelor face diferenta dintre un tester RJ-45 obisnuit
+si device-ul.
+
+Practic, este un instrument **"2 în 1"**: tester + ghid de conectare.
+
+Sper ca dispozivitul pe care il proiectez
+(imi propun sa ii fac si un **PCB compact**)
+sa ajunga in mainile laborantilor de RL/CCNA1.
+Acolo isi va atinge adevaratul potential.
+
+
+
+
+
 
 ## Descriere Generala
 
+
+Schema bloc:
+
+![img](./images/rj45-tester-schema-bloc.png)
 
 
 
@@ -37,5 +92,6 @@ Astfel deci, dispozivitul pe care l-am proiectat isi propune sa verifice.
     - Nu am găsit un card mai mic 🙁
 - 16x [LED Verde](https://www.optimusdigital.ro/ro/optoelectronice-led-uri/697-led-verde-de-3-mm-cu-lentile-difuze.html?search_query=0104210000006209&results=1)
 - [Modul Buzzer Pasiv](https://www.optimusdigital.ro/ro/componente-electronice/12598-modul-buzzer-pasiv.html?search_query=0104110000082985&results=1)
+- 2x [Buton cu Capac Rotund](https://www.optimusdigital.ro/ro/butoane-i-comutatoare/1115-buton-cu-capac-rotund-alb.html?search_query=buton+cu+capac&results=29)
 - Rezistente
 - 3 breadboard-uri 400 puncte
