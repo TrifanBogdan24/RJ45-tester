@@ -15,6 +15,35 @@ ISR(INT0_vect) {
     updatedBTN1 = true;
 }
 
+/*
+* Functia se va folosi cand semnalul ajunge la sender pe un pin gresit, sau nu ajunge deloc
+*/
+void long_beep()
+{
+    for (int i = 0; i < 200; i++) {
+        // Pentru a mari frecventa, micsoreaza delay-ul
+        PORTD |= (1 << PD5);   // HIGH
+        delayMicroseconds(800);
+        PORTD &= ~(1 << PD5);  // LOW
+        delayMicroseconds(800);
+    }
+}
+
+
+/*
+* Functia se va folosi cand semnalul ajunge la sender pe pinul corect
+*/
+void short_beep()
+{
+    for (int i = 0; i < 400; i++) {
+        // Pentru a mari frecventa, micsoreaza delay-ul
+        PORTD |= (1 << PD5);   // HIGH
+        delayMicroseconds(200);
+        PORTD &= ~(1 << PD5);  // LOW
+        delayMicroseconds(200);
+    }
+}
+
 void setup() {
     Serial.begin(9600);
 
@@ -27,7 +56,9 @@ void setup() {
     lcd.setCursor(0, 1);
     lcd.print("Straight-through");
 
-    // D2 - pin de iesire (legat catre BTN1)
+
+    
+    // D2 - pin de intrare (BTN1)
     DDRD &= ~(1 << PD2);
     PORTD |= (1 << PD2);
 
@@ -37,7 +68,22 @@ void setup() {
     EIMSK |= (1 << INT0);
     EIFR |= (1 << INTF0);
 
+    // D5 - pin de iesire (BUZZER)
+    DDRD |= (1 << PD5);
+
+    // Activeaza intreruperile
     sei();
+
+
+    // Testing:
+    for (int i = 0; i < 8; i++) {
+        short_beep();
+        delay(300);
+    }
+    long_beep();
+    delay(300);
+
+
 }
 
 void loop() {
@@ -53,6 +99,9 @@ void loop() {
             lcd.print("Cross-over");
         }
     }
+
+
+
 
     updatedBTN1 = false;
     delay(200);
