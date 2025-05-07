@@ -10,31 +10,31 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 // 0 = Straight-through ; 1 = Crossover
 volatile bool cableType = false;
-volatile bool updatedBTN1 = false;   // Blue button (switch cable type)
-volatile bool updatedBTN2 = false;   // Red button (force stop)
-volatile bool updatedBTN3 = false;   // White button (start tester)
+volatile bool pressedBTN1 = false;   // Blue button (switch cable type)
+volatile bool pressedBTN2 = false;   // Red button (force stop)
+volatile bool pressedBTN3 = false;   // White button (start tester)
 
 // Pentru intreruperile pe PCINT
 volatile uint8_t lastPortD = 0;
 
 
 
-bool pinsSenderSocket[8];
+volatile bool pinsSenderSocket[8];
 
 
 
 // Intrerupere pe pinul D2 (BTN1)
 ISR(INT0_vect) {
-    if (updatedBTN1) return;
+    if (pressedBTN1) return;
     cableType = !cableType;
-    updatedBTN1 = true;
+    pressedBTN1 = true;
 }
 
 
 // Intrerupere pe pinul D3 (BTN2)
 ISR(INT1_vect) {
-    if (updatedBTN2) return;
-    updatedBTN2 = true;
+    if (pressedBTN2) return;
+    pressedBTN2 = true;
 }
 
 
@@ -44,7 +44,7 @@ ISR(PCINT2_vect) {
     uint8_t changed = current ^ lastPortD;
 
     if (changed & (1 << PD4)) {
-        updatedBTN3 = true;
+        pressedBTN3 = true;
     }
 
     lastPortD = current;
@@ -202,6 +202,7 @@ void force_stop_handler()
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Force stop!");
+    init_sender_pins();
     delay(2000);
     cable_mode_full_lcd();
 }
@@ -212,13 +213,17 @@ void test_individual_rj45_pins()
     for (int i = 0; i < 8; i++) {
         pinsSenderSocket[i] = true;
         write_to_sender_socket();
+        if (pressedBTN2) {
+            force_stop_handler();
+            return;
+        }
 
         lcd.setCursor(13, 1);
         lcd.print(i + 1);
 
         // 1s pause betweem testing another RJ45 pin
         for (int j = 0; j < 10; j++) {
-            if (updatedBTN2) {
+            if (pressedBTN2) {
                 force_stop_handler();
                 return;
             }
@@ -227,8 +232,12 @@ void test_individual_rj45_pins()
 
         pinsSenderSocket[i] = false;
         write_to_sender_socket();
+        if (pressedBTN2) {
+            force_stop_handler();
+            return;
+        }
         delay(500);
-        if (updatedBTN2) {
+        if (pressedBTN2) {
             force_stop_handler();
             return;
         }
@@ -249,12 +258,12 @@ void test_all_rj45_pins()
 }
 
 void loop() {
-    if (updatedBTN1) {
+    if (pressedBTN1) {
         cable_mode_full_lcd();
     }
 
 
-    if (updatedBTN3) {
+    if (pressedBTN3) {
         lcd.clear();
         cable_type_first_line_lcd();
 
@@ -262,11 +271,11 @@ void loop() {
         lcd.print("Testing pin: ");
 
         test_individual_rj45_pins();
+        init_sender_pins();
     }
 
-
-    updatedBTN1 = false;
-    updatedBTN2 = false;
-    updatedBTN3 = false;
+    pressedBTN1 = false;
+    pressedBTN2 = false;
+    pressedBTN3 = false;
     delay(200);
 }
