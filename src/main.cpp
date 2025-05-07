@@ -137,6 +137,15 @@ void write_to_sender_socket()
 }
 
 
+void init_sender_pins()
+{
+    for (int i = 0; i < 8; i++) {
+        pinsSenderSocket[i] = false;
+    }
+    write_to_sender_socket();
+}
+
+
 
 void setup() {
     Serial.begin(9600);
@@ -163,10 +172,7 @@ void setup() {
     DDRD |= (1 << PD7);   // pin D7 -> register latch
     DDRB |= (1 << PB0);   // pin D8 -> register clock
 
-    for (int i = 0; i < 8; i++) {
-        pinsSenderSocket[i] = false;
-    }
-    write_to_sender_socket();
+    init_sender_pins();
 
     // Config intreperi pt INT0 (pe BTN1) si INT1 (pe BTN2)
     EICRA |= ((1 << ISC01) | (1 << ISC11));
@@ -191,6 +197,57 @@ void setup() {
 
 
 
+void force_stop_handler()
+{
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Force stop!");
+    delay(2000);
+    cable_mode_full_lcd();
+}
+
+
+void test_individual_rj45_pins()
+{
+    for (int i = 0; i < 8; i++) {
+        pinsSenderSocket[i] = true;
+        write_to_sender_socket();
+
+        lcd.setCursor(13, 1);
+        lcd.print(i + 1);
+
+        // 1s pause betweem testing another RJ45 pin
+        for (int j = 0; j < 10; j++) {
+            if (updatedBTN2) {
+                force_stop_handler();
+                return;
+            }
+            delay(100);
+        }
+
+        pinsSenderSocket[i] = false;
+        write_to_sender_socket();
+        delay(500);
+        if (updatedBTN2) {
+            force_stop_handler();
+            return;
+        }
+    }
+
+
+    init_sender_pins();
+    cable_type_first_line_lcd();
+    lcd.setCursor(0, 1);
+    lcd.print("Done            ");
+    delay(2000);
+    cable_mode_full_lcd();
+}
+
+void test_all_rj45_pins()
+{
+    // TODO:
+}
+
 void loop() {
     if (updatedBTN1) {
         cable_mode_full_lcd();
@@ -204,59 +261,7 @@ void loop() {
         lcd.setCursor(0, 1);
         lcd.print("Testing pin: ");
 
-
-
-        bool isForceStop = false;
-  
-
-        for (int i = 0; i < 8 && !isForceStop; i++) {
-
-            pinsSenderSocket[i] = true;
-            write_to_sender_socket();
-
-            lcd.setCursor(13, 1);
-            lcd.print(i + 1);
-
-            // 1s pause betweem testing another RJ45 pin
-            for (int j = 0; j < 10 && !isForceStop; j++) {
-                if (updatedBTN2) {
-                    isForceStop = true;
-                    break;
-                }
-                delay(100);
-            }
-
-            pinsSenderSocket[i] = false;
-            write_to_sender_socket();
-            delay(500);
-            if (updatedBTN2) {
-                isForceStop = true;
-                break;
-            }
-        }
-
-
-        for (int i = 0; i < 8; i++) {
-            pinsSenderSocket[i] = false;
-        }
-        write_to_sender_socket();
-
-        if (isForceStop) {
-            lcd.clear();
-            lcd.setCursor(0, 0);
-            lcd.print("Force stop!");
-
-    
-            delay(2000);
-            cable_mode_full_lcd();
-        } else {
-            cable_type_first_line_lcd();
-            lcd.setCursor(0, 1);
-            lcd.print("Done            ");
-            delay(2000);
-            cable_mode_full_lcd();
-        }
-
+        test_individual_rj45_pins();
     }
 
 
