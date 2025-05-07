@@ -1,6 +1,9 @@
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
 
+#define CABLE_TYPE_CROSSOVER        (bool) 0
+#define CABLE_TYPE_STRAIGHT_THROUGH (bool) 1
+
 // Set the LCD address
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
@@ -11,8 +14,10 @@ volatile bool updatedBTN1 = false;   // Blue button (switch cable type)
 volatile bool updatedBTN2 = false;   // Red button (force stop)
 volatile bool updatedBTN3 = false;   // White button (start tester)
 
-#define CABLE_TYPE_CROSSOVER        (bool) 0
-#define CABLE_TYPE_STRAIGHT_THROUGH (bool) 1
+// Pentru intreruperile pe PCINT
+volatile uint8_t lastPortD = 0;
+
+
 
 
 // Intrerupere pe pinul D2 (BTN1)
@@ -29,6 +34,18 @@ ISR(INT1_vect) {
     updatedBTN2 = true;
 }
 
+
+
+ISR(PCINT2_vect) {
+    uint8_t current = PIND;
+    uint8_t changed = current ^ lastPortD;
+
+    if (changed & (1 << PD4)) {
+        updatedBTN3 = true;
+    }
+
+    lastPortD = current;
+}
 
 
 /*
@@ -60,8 +77,18 @@ void short_beep()
     }
 }
 
+void cable_type_first_line_lcd()
+{
+    lcd.setCursor(0, 0);
+    if (cableType == CABLE_TYPE_STRAIGHT_THROUGH) {
+        lcd.print("Straight-through");
+    } else {
+        lcd.print("Cross-over      ");
+    }  
+}
 
-void cable_type_on_lcd()
+
+void cable_mode_full_lcd()
 {
     lcd.clear();
     lcd.setCursor(0, 0);
@@ -83,7 +110,7 @@ void setup() {
     lcd.begin(16, 2);
     lcd.backlight();
 
-    cable_type_on_lcd();
+    cable_mode_full_lcd();
 
 
     
@@ -95,13 +122,18 @@ void setup() {
     // Config intreperi pt INT0 (pe BTN1) si INT1 (pe BTN2)
     EICRA |= ((1 << ISC01) | (1 << ISC11));
     EICRA &= ~((1 << ISC00) | (1 << ISC10));
-
-
-    // Activeaza INT0 și INT1
+    // Permite intrerupere pe INT0 și INT1
     EIMSK |= (1 << INT0) | (1 << INT1);
-
-    // Sterge flag-urile vechi
+    // Sterge flag-urile anterioare pe INT0 si INT1
     EIFR |= (1 << INTF0) | (1 << INTF1);
+
+
+    // Config intreupere pin change pe D4 (pt BTN3)
+    PCICR |= (1 << PCIE2);
+    // Permite intrerupere pe PCINT20
+    PCMSK2 |= (1 << PCINT20); 
+    // Sterge flag-urile anterioare
+    PCIFR |= (1 << PCIF2);
 
 
     // Activeaza intreruperile
@@ -113,38 +145,37 @@ void setup() {
 
 void loop() {
     if (updatedBTN1) {
-        cable_type_on_lcd();
+        cable_mode_full_lcd();
     }
 
 
     if (updatedBTN2) {
         lcd.clear();
         lcd.setCursor(0, 0);
-        lcd.print("Stopping");
+        lcd.print("Force stop");
         delay(2000);
-        cable_type_on_lcd();
+        cable_mode_full_lcd();
     }
 
 
     if (updatedBTN3) {
         lcd.clear();
-        lcd.setCursor(0, 0);
-
-        if (cableType == CABLE_TYPE_CROSSOVER)
-            lcd.print("Crossover");
-        else if (cableType == CABLE_TYPE_STRAIGHT_THROUGH)
-            lcd.print("Straight-trough");
-        
+        cable_type_first_line_lcd();
 
         lcd.setCursor(0, 1);
-        lcd.print("Testing pin");
+        lcd.print("Testing pin: ");
 
         for (int i = 1; i <= 8; i++) {
-            lcd.setCursor(11, 1);
+            lcd.setCursor(13, 1);
             lcd.print(i);
             delay(1000);
         }
-        
+
+        cable_type_first_line_lcd();
+        lcd.setCursor(0, 1);
+        lcd.print("Done            ");
+        delay(2000);
+        cable_mode_full_lcd();
     }
 
 
