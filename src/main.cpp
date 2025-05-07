@@ -20,12 +20,12 @@ ISR(INT0_vect) {
 */
 void long_beep()
 {
-    for (int i = 0; i < 200; i++) {
+    for (int i = 0; i < 250; i++) {
         // Pentru a mari frecventa, micsoreaza delay-ul
         PORTD |= (1 << PD5);   // HIGH
-        delayMicroseconds(800);
+        delayMicroseconds(1000);
         PORTD &= ~(1 << PD5);  // LOW
-        delayMicroseconds(800);
+        delayMicroseconds(1000);
     }
 }
 
@@ -82,8 +82,6 @@ void setup() {
     }
     long_beep();
     delay(300);
-
-
 }
 
 void loop() {
