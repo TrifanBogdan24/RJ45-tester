@@ -19,6 +19,9 @@ volatile uint8_t lastPortD = 0;
 
 
 
+bool pinsSenderSocket[8];
+
+
 
 // Intrerupere pe pinul D2 (BTN1)
 ISR(INT0_vect) {
@@ -102,6 +105,39 @@ void cable_mode_full_lcd()
     }
 }
 
+
+
+/*
+* ATENTIE: modificarea unei singure valori presupune
+* scrierea tuturor celorlalte pe shift register (pt a pastra starea lor)
+*/
+void write_to_sender_socket()
+{
+    // LOW pe pinul D7 -> register latch
+    PORTD |= (1 << PD7);
+  
+    // Trimite in ordine inversa, deoarece shift-registrul foloseste LSB first
+    for (int i = 7; i >= 0; i--) {
+        if (pinsSenderSocket[i]) {
+            // LOW pe D6 (register data)
+            PORTD |= (1 << PD6);
+        } else {
+            // HIGH pe D6 (register data)
+            PORTD &= ~(1 << PD6);
+        }
+  
+
+        // Creez un front de ceas (rising + falling edge):
+       PORTB &= ~(1 << PB0);  // HIGH pe D8 (register clock)
+       PORTB |= (1 << PB0);   // LOW pe D8 (register clock)
+    }
+  
+    // HIGH pe pinul D7 -> register latch
+    PORTD &= ~(1 << PD7);
+}
+
+
+
 void setup() {
     Serial.begin(9600);
 
@@ -118,6 +154,19 @@ void setup() {
     DDRD &= ~((1 << PD2) | (1 << PD3) | (1 << PD4));
     PORTD |= (1 << PD2) | (1 << PD3) | (1 << PD4); 
 
+
+    // Output pin for BUZZER: D5
+    DDRD |= (1 << PD5);
+
+    // Output pins pe Arduino pt shift register-ul asociat sender-ului:
+    DDRD |= (1 << PD6);   // pin D6 -> register data
+    DDRD |= (1 << PD7);   // pin D7 -> register latch
+    DDRB |= (1 << PB0);   // pin D8 -> register clock
+
+    for (int i = 0; i < 8; i++) {
+        pinsSenderSocket[i] = false;
+    }
+    write_to_sender_socket();
 
     // Config intreperi pt INT0 (pe BTN1) si INT1 (pe BTN2)
     EICRA |= ((1 << ISC01) | (1 << ISC11));
@@ -142,7 +191,6 @@ void setup() {
 
 
 
-
 void loop() {
     if (updatedBTN1) {
         cable_mode_full_lcd();
@@ -156,12 +204,18 @@ void loop() {
         lcd.setCursor(0, 1);
         lcd.print("Testing pin: ");
 
+
+
         bool isForceStop = false;
+  
 
+        for (int i = 0; i < 8 && !isForceStop; i++) {
 
-        for (int i = 1; i <= 8 && !isForceStop; i++) {
+            pinsSenderSocket[i] = true;
+            write_to_sender_socket();
+
             lcd.setCursor(13, 1);
-            lcd.print(i);
+            lcd.print(i + 1);
 
             // 1s pause betweem testing another RJ45 pin
             for (int j = 0; j < 10 && !isForceStop; j++) {
@@ -171,13 +225,28 @@ void loop() {
                 }
                 delay(100);
             }
+
+            pinsSenderSocket[i] = false;
+            write_to_sender_socket();
+            delay(500);
+            if (updatedBTN2) {
+                isForceStop = true;
+                break;
+            }
         }
 
+
+        for (int i = 0; i < 8; i++) {
+            pinsSenderSocket[i] = false;
+        }
+        write_to_sender_socket();
 
         if (isForceStop) {
             lcd.clear();
             lcd.setCursor(0, 0);
             lcd.print("Force stop!");
+
+    
             delay(2000);
             cable_mode_full_lcd();
         } else {
