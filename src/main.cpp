@@ -149,15 +149,6 @@ void loop() {
     }
 
 
-    if (updatedBTN2) {
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("Force stop");
-        delay(2000);
-        cable_mode_full_lcd();
-    }
-
-
     if (updatedBTN3) {
         lcd.clear();
         cable_type_first_line_lcd();
@@ -165,17 +156,38 @@ void loop() {
         lcd.setCursor(0, 1);
         lcd.print("Testing pin: ");
 
-        for (int i = 1; i <= 8; i++) {
+        bool isForceStop = false;
+
+
+        for (int i = 1; i <= 8 && !isForceStop; i++) {
             lcd.setCursor(13, 1);
             lcd.print(i);
-            delay(1000);
+
+            // 1s pause betweem testing another RJ45 pin
+            for (int j = 0; j < 10 && !isForceStop; j++) {
+                if (updatedBTN2) {
+                    isForceStop = true;
+                    break;
+                }
+                delay(100);
+            }
         }
 
-        cable_type_first_line_lcd();
-        lcd.setCursor(0, 1);
-        lcd.print("Done            ");
-        delay(2000);
-        cable_mode_full_lcd();
+
+        if (isForceStop) {
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Force stop!");
+            delay(2000);
+            cable_mode_full_lcd();
+        } else {
+            cable_type_first_line_lcd();
+            lcd.setCursor(0, 1);
+            lcd.print("Done            ");
+            delay(2000);
+            cable_mode_full_lcd();
+        }
+
     }
 
 
