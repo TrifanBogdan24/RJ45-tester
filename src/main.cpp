@@ -7,13 +7,29 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 // 0 = Straight-through ; 1 = Crossover
 volatile bool cableType = false;
-volatile bool updatedBTN1 = false;
+volatile bool updatedBTN1 = false;   // Blue button (switch cable type)
+volatile bool updatedBTN2 = false;   // Red button (force stop)
+volatile bool updatedBTN3 = false;   // White button (start tester)
 
+#define CABLE_TYPE_CROSSOVER        (bool) 0
+#define CABLE_TYPE_STRAIGHT_THROUGH (bool) 1
+
+
+// Intrerupere pe pinul D2 (BTN1)
 ISR(INT0_vect) {
     if (updatedBTN1) return;
     cableType = !cableType;
     updatedBTN1 = true;
 }
+
+
+// Intrerupere pe pinul D3 (BTN2)
+ISR(INT1_vect) {
+    if (updatedBTN2) return;
+    updatedBTN2 = true;
+}
+
+
 
 /*
 * Functia se va folosi cand semnalul ajunge la sender pe un pin gresit, sau nu ajunge deloc
@@ -44,6 +60,21 @@ void short_beep()
     }
 }
 
+
+void cable_type_on_lcd()
+{
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Mode:");
+    lcd.setCursor(0, 1);
+
+    if (cableType == CABLE_TYPE_STRAIGHT_THROUGH) {
+        lcd.print("Straight-through");
+    } else {
+        lcd.print("Cross-over");
+    }
+}
+
 void setup() {
     Serial.begin(9600);
 
@@ -51,56 +82,74 @@ void setup() {
 
     lcd.begin(16, 2);
     lcd.backlight();
-    lcd.setCursor(0, 0);
-    lcd.print("Mode:");
-    lcd.setCursor(0, 1);
-    lcd.print("Straight-through");
+
+    cable_type_on_lcd();
 
 
     
-    // D2 - pin de intrare (BTN1)
-    DDRD &= ~(1 << PD2);
-    PORTD |= (1 << PD2);
+    // Input pins: D1 (for BTN1), D2 (for BTN2), D3 (for BTN3)
+    DDRD &= ~((1 << PD2) | (1 << PD3) | (1 << PD4));
+    PORTD |= (1 << PD2) | (1 << PD3) | (1 << PD4); 
 
-    // Intrerupere atasata pinului D2 (BTN1)
-    EICRA |= (1 << ISC01);
-    EICRA &= ~(1 << ISC00);
-    EIMSK |= (1 << INT0);
-    EIFR |= (1 << INTF0);
 
-    // D5 - pin de iesire (BUZZER)
-    DDRD |= (1 << PD5);
+    // Config intreperi pt INT0 (pe BTN1) si INT1 (pe BTN2)
+    EICRA |= ((1 << ISC01) | (1 << ISC11));
+    EICRA &= ~((1 << ISC00) | (1 << ISC10));
+
+
+    // Activeaza INT0 și INT1
+    EIMSK |= (1 << INT0) | (1 << INT1);
+
+    // Sterge flag-urile vechi
+    EIFR |= (1 << INTF0) | (1 << INTF1);
+
 
     // Activeaza intreruperile
     sei();
-
-
-    // Testing:
-    for (int i = 0; i < 8; i++) {
-        short_beep();
-        delay(300);
-    }
-    long_beep();
-    delay(300);
 }
+
+
+
 
 void loop() {
     if (updatedBTN1) {
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("Mode:");
-        lcd.setCursor(0, 1);
-
-        if (!cableType) {
-            lcd.print("Straight-through");
-        } else {
-            lcd.print("Cross-over");
-        }
+        cable_type_on_lcd();
     }
 
 
+    if (updatedBTN2) {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Stopping");
+        delay(2000);
+        cable_type_on_lcd();
+    }
+
+
+    if (updatedBTN3) {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+
+        if (cableType == CABLE_TYPE_CROSSOVER)
+            lcd.print("Crossover");
+        else if (cableType == CABLE_TYPE_STRAIGHT_THROUGH)
+            lcd.print("Straight-trough");
+        
+
+        lcd.setCursor(0, 1);
+        lcd.print("Testing pin");
+
+        for (int i = 1; i <= 8; i++) {
+            lcd.setCursor(11, 1);
+            lcd.print(i);
+            delay(1000);
+        }
+        
+    }
 
 
     updatedBTN1 = false;
+    updatedBTN2 = false;
+    updatedBTN3 = false;
     delay(200);
 }
