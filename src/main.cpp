@@ -119,10 +119,10 @@ void write_to_sender_socket()
     // Trimite in ordine inversa, deoarece shift-registrul foloseste LSB first
     for (int i = 7; i >= 0; i--) {
         if (pinsSenderSocket[i]) {
-            // LOW pe D6 (register data)
+            // HIGH pe D6 (register data)
             PORTD |= (1 << PD6);
         } else {
-            // HIGH pe D6 (register data)
+            // LOW pe D6 (register data)
             PORTD &= ~(1 << PD6);
         }
   
@@ -148,6 +148,11 @@ void init_sender_pins()
 
 
 void setup() {
+    // Output pins pe Arduino pt shift register-ul asociat sender-ului:
+    DDRD |= (1 << PD6);   // pin D6 -> register data
+    DDRD |= (1 << PD7);   // pin D7 -> register latch
+    DDRB |= (1 << PB0);   // pin D8 -> register clock
+
     Serial.begin(9600);
 
     cableType = false;
@@ -167,12 +172,6 @@ void setup() {
     // Output pin for BUZZER: D5
     DDRD |= (1 << PD5);
 
-    // Output pins pe Arduino pt shift register-ul asociat sender-ului:
-    DDRD |= (1 << PD6);   // pin D6 -> register data
-    DDRD |= (1 << PD7);   // pin D7 -> register latch
-    DDRB |= (1 << PB0);   // pin D8 -> register clock
-
-    init_sender_pins();
 
     // Config intreperi pt INT0 (pe BTN1) si INT1 (pe BTN2)
     EICRA |= ((1 << ISC01) | (1 << ISC11));
@@ -193,6 +192,9 @@ void setup() {
 
     // Activeaza intreruperile
     sei();
+
+    // It's better to double-check
+    init_sender_pins();
 }
 
 
