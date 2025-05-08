@@ -90,8 +90,10 @@ Schema bloc:
 - [Modul LCD SPI 128x160 cu adaptor microSD](https://ardushop.ro/ro/electronica/2124-modul-lcd-spi-128x160-6427854032546.html)
 - [Card MicroSD 16 GB](https://www.optimusdigital.ro/ro/memorii/8678-card-microsd-original-de-16-gb-cu-noobs-compatibil-cu-raspberry-pi-4-model-b-varianta-bulk.html)
     - Nu am găsit un card mai mic 🙁
-- 16x [LED Verde](https://www.optimusdigital.ro/ro/optoelectronice-led-uri/697-led-verde-de-3-mm-cu-lentile-difuze.html?search_query=0104210000006209&results=1)
+- 16x [LED Verde 3mm cu Lentile Difuze](https://www.optimusdigital.ro/ro/optoelectronice-led-uri/697-led-verde-de-3-mm-cu-lentile-difuze.html?search_query=0104210000006209&results=1)
+- 16x Rezistente 220 Ω (pt LED-uri)
 - [Modul Buzzer Pasiv](https://www.optimusdigital.ro/ro/componente-electronice/12598-modul-buzzer-pasiv.html?search_query=0104110000082985&results=1)
-- 2x [Buton cu Capac Rotund](https://www.optimusdigital.ro/ro/butoane-i-comutatoare/1115-buton-cu-capac-rotund-alb.html?search_query=buton+cu+capac&results=29)
+- 3x [Buton cu Capac Rotund](https://www.optimusdigital.ro/ro/butoane-i-comutatoare/1115-buton-cu-capac-rotund-alb.html?search_query=buton+cu+capac&results=29)
 - Rezistente
-- 3 breadboard-uri 400 puncte
+- 3x Rezistente (de PULL-UP) de 220 Ω (pt butoane)
+- 3 breadboard-uri 830 puncte
