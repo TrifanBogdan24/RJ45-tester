@@ -97,3 +97,11 @@ Schema bloc:
 - Rezistente
 - 3x Rezistente (de PULL-UP) de 220 Ω (pt butoane)
 - 3 breadboard-uri 830 puncte
+
+
+
+### Schema Electrica
+
+
+![img](./images/rj45-schematics.jpg)
+

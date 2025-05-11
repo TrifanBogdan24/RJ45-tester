@@ -4,6 +4,10 @@
 
   (paper "A4")
 
+  (title_block
+    (title "RJ-45 Tester (by Trifan Bogdan-Cristian)")
+  )
+
   (lib_symbols
     (symbol "74xx:74HC165" (in_bom yes) (on_board yes)
       (property "Reference" "U" (id 0) (at -7.62 19.05 0)
@@ -2596,12 +2600,12 @@
     (property "Datasheet" "" (id 3) (at 134.62 135.89 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "" (uuid e0496d5a-6b3d-4859-a4cf-0d61db2cb292))
-    (pin "" (uuid e0496d5a-6b3d-4859-a4cf-0d61db2cb292))
-    (pin "" (uuid e0496d5a-6b3d-4859-a4cf-0d61db2cb292))
-    (pin "" (uuid e0496d5a-6b3d-4859-a4cf-0d61db2cb292))
-    (pin "" (uuid e0496d5a-6b3d-4859-a4cf-0d61db2cb292))
-    (pin "" (uuid e0496d5a-6b3d-4859-a4cf-0d61db2cb292))
+    (pin "" (uuid e0496d5a-6b3d-4859-a4cf-0d61db2cb297))
+    (pin "" (uuid e0496d5a-6b3d-4859-a4cf-0d61db2cb297))
+    (pin "" (uuid e0496d5a-6b3d-4859-a4cf-0d61db2cb297))
+    (pin "" (uuid e0496d5a-6b3d-4859-a4cf-0d61db2cb297))
+    (pin "" (uuid e0496d5a-6b3d-4859-a4cf-0d61db2cb297))
+    (pin "" (uuid e0496d5a-6b3d-4859-a4cf-0d61db2cb297))
   )
 
   (symbol (lib_id "Device:LED") (at 109.22 73.66 180) (unit 1)
@@ -2732,10 +2736,10 @@
     (property "Datasheet" "" (id 3) (at 144.78 111.76 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "" (uuid ce63fe5a-05f9-46ca-87bd-5e727c1bb35c))
-    (pin "" (uuid ce63fe5a-05f9-46ca-87bd-5e727c1bb35c))
-    (pin "" (uuid ce63fe5a-05f9-46ca-87bd-5e727c1bb35c))
-    (pin "" (uuid ce63fe5a-05f9-46ca-87bd-5e727c1bb35c))
+    (pin "" (uuid ce63fe5a-05f9-46ca-87bd-5e727c1bb35f))
+    (pin "" (uuid ce63fe5a-05f9-46ca-87bd-5e727c1bb35f))
+    (pin "" (uuid ce63fe5a-05f9-46ca-87bd-5e727c1bb35f))
+    (pin "" (uuid ce63fe5a-05f9-46ca-87bd-5e727c1bb35f))
   )
 
   (symbol (lib_id "power:+5V") (at 248.92 55.88 0) (unit 1)
