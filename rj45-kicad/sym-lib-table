@@ -1,0 +1,6 @@
+(sym_lib_table
+  (lib (name "New_Library")(type "KiCad")(uri "${KIPRJMOD}/New_Library.kicad_sym")(options "")(descr ""))
+  (lib (name "micro-SD-module")(type "KiCad")(uri "${KIPRJMOD}/micro-SD-module.kicad_sym")(options "")(descr ""))
+  (lib (name "1-micro-SD")(type "KiCad")(uri "${KIPRJMOD}/1-micro-SD.kicad_sym")(options "")(descr ""))
+  (lib (name "custom-parts")(type "KiCad")(uri "${KIPRJMOD}/custom-parts.kicad_sym")(options "")(descr ""))
+)
