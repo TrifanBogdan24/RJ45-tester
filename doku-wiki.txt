@@ -84,3 +84,10 @@ Schema bloc:
 
 
 {{:pm:prj2025:ajipa:rj45-schematics.jpg?800}}
+
+
+
+==== Progresul fizic, pe etape ====
+
+{{:pm:prj2025:ajipa:rj45-hw-stage-1.jpeg?800}}
+{{:pm:prj2025:ajipa:rj45-hw-stage-2.jpeg?800}}

@@ -105,3 +105,9 @@ Schema bloc:
 
 ![img](./images/rj45-schematics.jpg)
 
+
+
+### Progresul fizic, pe etape
+
+![img](images/rj45-hw-stage-1.jpeg)
+![img](images/rj45-hw-stage-2.jpeg)
