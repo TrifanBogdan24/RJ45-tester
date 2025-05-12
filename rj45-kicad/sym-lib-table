@@ -3,4 +3,5 @@
   (lib (name "micro-SD-module")(type "KiCad")(uri "${KIPRJMOD}/micro-SD-module.kicad_sym")(options "")(descr ""))
   (lib (name "1-micro-SD")(type "KiCad")(uri "${KIPRJMOD}/1-micro-SD.kicad_sym")(options "")(descr ""))
   (lib (name "custom-parts")(type "KiCad")(uri "${KIPRJMOD}/custom-parts.kicad_sym")(options "")(descr ""))
+  (lib (name "SN74HC595N")(type "KiCad")(uri "/home/bogdan/Downloads/SN74HC595N/SN74HC595N.kicad_sym")(options "")(descr ""))
 )
