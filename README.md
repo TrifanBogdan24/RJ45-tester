@@ -95,7 +95,8 @@ Schema bloc:
 - 16x Rezistente 220 Ω (pt LED-uri)
 - [Modul Buzzer Pasiv](https://www.optimusdigital.ro/ro/componente-electronice/12598-modul-buzzer-pasiv.html?search_query=0104110000082985&results=1)
 - 3x [Buton cu Capac Rotund](https://www.optimusdigital.ro/ro/butoane-i-comutatoare/1115-buton-cu-capac-rotund-alb.html?search_query=buton+cu+capac&results=29)
-- 3x Rezistente (de PULL-UP) de 220 Ω (pt butoane)
+- 3x Rezistente (de PULL-UP) de 10 kΩ (pt butoane)
+- 3x Condensatoare ceramice de 47nF (pt butoane)
 - 3 breadboard-uri 830 puncte
 
 
@@ -104,6 +105,29 @@ Schema bloc:
 
 
 ![img](./images/rj45-schematics.jpg)
+
+
+### Debounce butoane: Filtru trece-jos
+
+Pentru a trata **debounce-ul butoanelor** exclusiv din hardware,
+m-am gandit sa introduc in circuit un **filtru trece-jos**,
+punand cate un condensator ceramic in paralel cu fiecare buton.
+
+Constanta de timp τ:
+
+```
+τ = R*C =10kΩ*47nF = 10^4 + 47*10^(-9) = 47*10^(-5) = 470us
+
+5*τ=5*470μs≈2.35ms
+```
+
+
+Astfel, schimbarile mai rapide de **2.35 ms** ale butoanelor
+vor fi ignorate (la nivel hardware) de aceste filtre.
+
+
+> Chiar si asa, eu tot am lasat in cod un mic **delay**
+> (unul mult mai mare decat ce poate circuitul construit de mine sa filtreze).
 
 
 
