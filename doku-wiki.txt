@@ -114,5 +114,7 @@ Chiar si asa, eu tot am lasat in cod un mic **delay**
 
 ==== Progresul fizic, pe etape ====
 
-{{:pm:prj2025:ajipa:rj45-hw-stage-1.jpeg?800}}
-{{:pm:prj2025:ajipa:rj45-hw-stage-2.jpeg?800}}
+{{:pm:prj2025:ajipa:rj45-hw-stage-1.jpeg?500}}
+{{:pm:prj2025:ajipa:rj45-hw-stage-2.jpeg?500}}
+{{:pm:prj2025:ajipa:rj45-hw-stage-3.jpeg?300}}
+

@@ -135,3 +135,4 @@ vor fi ignorate (la nivel hardware) de aceste filtre.
 
 ![img](images/rj45-hw-stage-1.jpeg)
 ![img](images/rj45-hw-stage-2.jpeg)
+![img](images/rj45-hw-stage-3.jpeg)
