@@ -1,8 +1,20 @@
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
+#include <SD.h>
 
 #define CABLE_TYPE_CROSSOVER        (bool) 0
 #define CABLE_TYPE_STRAIGHT_THROUGH (bool) 1
+
+// Pini rezervati pe Arduino pt modul MicroSD:
+#define PIN_MICRO_SD_MODULE_CS (int) 9   // Chip Select -> D9
+
+
+// Pini rezervati pe Arduino pt display-ul pe SPI:
+#define PIN_IMAGE_DIPSLAY_CS (int) 10  // Chip Select -> D10
+#define PIN_IMAGE_DISPLAY_RS (int) 14  // Register Select -> A0 (D14)
+
+
+
 
 // Set the LCD address
 LiquidCrystal_I2C lcd(0x27, 16, 2);
@@ -195,6 +207,36 @@ void setup() {
 
     // It's better to double-check
     init_sender_pins();
+
+    while (!SD.begin(PIN_MICRO_SD_MODULE_CS)) {
+        Serial.println("[ERR] SD init failed!");
+        delay(200);
+    }
+    Serial.println("[OK] SD init success!");
+
+    int is_micro_sd_err = 0;
+    do {
+        is_micro_sd_err = 0;
+
+        if (SD.exists("cross.bmp")) {
+            Serial.println("[OK] 'cross.bmp'");
+        } else {
+            Serial.println("[ERR] No such file 'cross.bmp' on microSD!");
+            is_micro_sd_err = 1;
+        }
+
+        if (SD.exists("straight.bmp")) {
+            Serial.println("[OK] 'straight.bmp'");
+        } else {
+            Serial.println("[ERR] No such file 'straight.bmp' on microSD!");
+            is_micro_sd_err = 1;
+        }
+
+        delay(200);
+    } while (is_micro_sd_err);
+
+    // MicroSD is ready to go
+
 }
 
 
@@ -273,6 +315,7 @@ void loop() {
         lcd.print("Testing pin: ");
 
         test_individual_rj45_pins();
+        long_beep();
         init_sender_pins();
     }
 
