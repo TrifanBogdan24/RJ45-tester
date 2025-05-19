@@ -30,8 +30,13 @@ volatile bool pressedBTN3 = false;   // White button (start tester)
 volatile uint8_t lastPortD = 0;
 
 
+const int dataPin = A1;  // QH (serial out)
+const int plPin   = A2;  // /PL (parallel load)
+const int clkPin  = A3;  // CP (clock)
 
-volatile bool pinsSenderSocket[8];
+// Vector de stocare a bitilor
+bool pinsReceiverSocket[8];
+bool pinsSenderSocket[8];
 
 
 
@@ -66,27 +71,32 @@ ISR(PCINT2_vect) {
 /*
 * Functia se va folosi cand semnalul ajunge la sender pe un pin gresit, sau nu ajunge deloc
 */
-void long_beep()
+void beep_not_okay()
 {
-    for (int i = 0; i < 250; i++) {
-        // Pentru a mari frecventa, micsoreaza delay-ul
-        PORTD |= (1 << PD5);   // HIGH
-        delayMicroseconds(1000);
-        PORTD &= ~(1 << PD5);  // LOW
-        delayMicroseconds(1000);
+    for (int j = 0; j < 2; j++) {
+        for (int i = 0; i < 250; i++) {
+            // Pentru a mari frecventa, micsoreaza delay-ul
+            PORTD |= (1 << PD5);   // HIGH
+            delayMicroseconds(1000);
+            PORTD &= ~(1 << PD5);  // LOW
+            delayMicroseconds(1000);
+        }
+
+        if (j < 1) delay(50);
     }
+
 }
 
 
 /*
 * Functia se va folosi cand semnalul ajunge la sender pe pinul corect
 */
-void short_beep()
+void beep_okay()
 {
     for (int i = 0; i < 400; i++) {
         // Pentru a mari frecventa, micsoreaza delay-ul
         PORTD |= (1 << PD5);   // HIGH
-        delayMicroseconds(200);
+        delayMicroseconds(200);   // frecventa inalta
         PORTD &= ~(1 << PD5);  // LOW
         delayMicroseconds(200);
     }
@@ -160,10 +170,27 @@ void init_sender_pins()
 
 
 void setup() {
-    // Output pins pe Arduino pt shift register-ul asociat sender-ului:
+    // Output pins pe Arduino pt shift register-ul 74HC595 (asociat sender-ului):
     DDRD |= (1 << PD6);   // pin D6 -> register data
     DDRD |= (1 << PD7);   // pin D7 -> register latch
     DDRB |= (1 << PB0);   // pin D8 -> register clock
+    init_sender_pins();
+
+
+    // Configurare pini pt shift register-ul 74HC165 (asociat receiver-ului):
+    DDRC &= ~(1 << PC1);   // input pin D15 -> register QH (serial out)
+    DDRC |= (1 << PC2);    // output pin D16 -> register !PL (parallel load)
+    DDRC |= (1 << PC3);    // output pin D17 -> register CP (clock) 
+    for (int i = 0; i < 8; i++) {
+        pinsReceiverSocket[i] = false;
+    }
+
+
+    // Stare inițială a shift register-ului asociat receiver-ului
+    PORTC |= (1 << PC2);  // LOW pe pin D16 (register parallel load)
+    PORTC &= ~(1 << PC3);  // LOW pe pin D17 (register clock)
+
+
 
     Serial.begin(9600);
 
@@ -175,7 +202,6 @@ void setup() {
     cable_mode_full_lcd();
 
 
-    
     // Input pins: D1 (for BTN1), D2 (for BTN2), D3 (for BTN3)
     DDRD &= ~((1 << PD2) | (1 << PD3) | (1 << PD4));
     PORTD |= (1 << PD2) | (1 << PD3) | (1 << PD4); 
@@ -251,6 +277,47 @@ void force_stop_handler()
     cable_mode_full_lcd();
 }
 
+void fetch_receiver_socket()
+{
+    PORTC &= ~(1 << PC2);  // LOW pe pin D16 (register parallel load)
+    delayMicroseconds(5);
+    PORTC |= (1 << PC2);  // HIGH pe pin D16 (register parallel load)
+
+    // 2. Citește fiecare bit
+    for (int i = 0; i < 8; i++) {
+        // Shift register-ul transmite serial valorile,
+        // incepand cu bitul D7 -> D6 -> ... -> D0 prin pinul QH
+        // Se foloseste ordinea MSB -> trebuie inversata din cod
+        pinsReceiverSocket[7 - i] = PINC & (1 << PC1);   // read pin D15 (register serial out)
+
+        // Pulseaza ceasul
+        PORTC |= (1 << PC3);  // HIGH pe pin D17 (register clock)
+        delayMicroseconds(5);
+        PORTC &= ~(1 << PC3);  // LOW pe pin D17 (register clock)
+        delayMicroseconds(5);
+    }
+}
+
+
+bool is_correct_wiring(int pin_index)
+{
+    fetch_receiver_socket();
+
+    if (cableType == CABLE_TYPE_CROSSOVER) {
+            if (pin_index == 0) return pinsReceiverSocket[2];
+            else if (pin_index == 1) return pinsReceiverSocket[5];
+            else if (pin_index == 2) return pinsReceiverSocket[0];
+            else if (pin_index == 3) return pinsReceiverSocket[2];
+            else if (pin_index == 4) return pinsReceiverSocket[3];
+            else if (pin_index == 5) return pinsReceiverSocket[1];
+            else if (pin_index == 6) return pinsReceiverSocket[6];
+            else if (pin_index == 7) return pinsReceiverSocket[7];
+    }
+
+    // for STRAIGHT_THROUGH cables
+    return pinsReceiverSocket[pin_index];
+}
+
 
 void test_individual_rj45_pins()
 {
@@ -273,6 +340,8 @@ void test_individual_rj45_pins()
         // Scrie indicele pinului pt SENDER
         lcd.setCursor(4, 1);
         lcd.print(i + 1);        // writes 1 digit
+        lcd.setCursor(13, 1);
+        lcd.print("   ");
 
         // Scrie indiciele pinului pe care RECEIVER ar trb in mod normal sa primeasca semnal
         lcd.setCursor(11, 1);
@@ -281,7 +350,7 @@ void test_individual_rj45_pins()
             if (i == 0) lcd.print(3);
             else if (i == 1) lcd.print(6);
             else if (i == 2) lcd.print(1);
-            else if (i == 3) lcd.print(3);
+            else if (i == 3) lcd.print(4);
             else if (i == 4) lcd.print(5);
             else if (i == 5) lcd.print(2);
             else if (i == 6) lcd.print(7);
@@ -289,6 +358,10 @@ void test_individual_rj45_pins()
         } else {
             lcd.print(i + 1);        // writes 1 digit
         }
+
+
+
+
 
 
         // 1s pause betweem testing another RJ45 pin
@@ -306,11 +379,30 @@ void test_individual_rj45_pins()
             force_stop_handler();
             return;
         }
+        
+        delay(20);  // un mic delay pt a astepta semnalul pe cablu
+        if (is_correct_wiring(i)) {
+            lcd.setCursor(13, 1);
+            lcd.print(" OK");
+            beep_okay();
+            delay(340);
+        } else {
+            lcd.setCursor(13, 1);
+            lcd.print("NOK");
+            beep_not_okay();
+        }
+  
+        if (pressedBTN2) {
+            force_stop_handler();
+            return;
+        }
+
         delay(500);
         if (pressedBTN2) {
             force_stop_handler();
             return;
         }
+
     }
 
 
@@ -327,6 +419,8 @@ void test_all_rj45_pins()
     // TODO:
 }
 
+
+
 void loop() {
     if (pressedBTN1) {
         cable_mode_full_lcd();
@@ -341,7 +435,6 @@ void loop() {
         lcd.print("Testing pin: ");
 
         test_individual_rj45_pins();
-        long_beep();
         init_sender_pins();
     }
 
