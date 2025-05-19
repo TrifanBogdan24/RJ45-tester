@@ -73,7 +73,7 @@ Acolo isi va atinge adevaratul potential.
 
 Schema bloc:
 
-![img](./images/rj45-tester-schema-bloc.jpg)
+![img](images/rj45-tester-schema-bloc.jpg)
 
 
 
@@ -104,7 +104,7 @@ Schema bloc:
 ### Schema Electrica
 
 
-![img](./images/rj45-schematics.jpg)
+![img](images/rj45-schematics.jpg)
 
 
 ### Debounce butoane: Filtru trece-jos
@@ -136,3 +136,33 @@ vor fi ignorate (la nivel hardware) de aceste filtre.
 ![img](images/rj45-hw-stage-1.jpeg)
 ![img](images/rj45-hw-stage-2.jpeg)
 ![img](images/rj45-hw-stage-3.jpeg)
+
+
+## Software Design
+
+
+Biblioteci folosite:
+- **Arduino.h**: biblioteca default pentru placa de dezvoltare
+- **LiquidCrystal_I2C.h**: imi permite scrierea caracterelor pe ecranul secundar (cel pe I2C, de rezolutie 16x02)
+- **SD.h**: permite comunicarea cu modulul de card microSD si interactiunea cu sistemul de fisiere de pe card
+- **Adafruit_GFX.h**, **Adafruit_ST7735.h**, **Adafruit_ImageReader.h**: pentru interactiunea cu display-ul principal (cel pe SPI, de rezolutie 128x160)
+
+Repo GitHub: <https://github.com/TrifanBogdan24/RJ45-tester> - codul sursa se gaseste in folderul **src/**.
+
+
+
+Am asociat fiecarui buton cate o intrerupere:
+- Butonul **albastru** - intreruperea **INT0** - schimba tipul de cablare (crossover/straigh-through)
+- Butonul **alb** - intreruperea **INT1** - porneste algoritmul de testare:
+  - Mai intai trimite cate un semnal (secvential) catre fiecare pin al soclului RJ45 de testare (LED-urile asociate se vor aprinde) 
+- Butonul **rosu** - intreruperea **PCINT20** (din **PCINT2_vect**) - opreste fortat rularea testului
+
+
+
+## Resurse folosite
+
+Pt cablurile pe care le folosesc pe breadboard: <https://www.youtube.com/shorts/3qbz26m9SPA>
+
+
+Data-sheets:
+- [Arduino NANO pinout](https://docs.arduino.cc/resources/pinouts/A000005-full-pinout.pdf)

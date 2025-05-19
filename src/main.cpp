@@ -209,26 +209,26 @@ void setup() {
     init_sender_pins();
 
     while (!SD.begin(PIN_MICRO_SD_MODULE_CS)) {
-        Serial.println("[ERR] SD init failed!");
+        // "[ERR] SD init failed!");
         delay(200);
     }
-    Serial.println("[OK] SD init success!");
+    // "[OK] SD init success!");
 
     int is_micro_sd_err = 0;
     do {
         is_micro_sd_err = 0;
 
         if (SD.exists("cross.bmp")) {
-            Serial.println("[OK] 'cross.bmp'");
+            // "[OK] 'cross.bmp'");
         } else {
-            Serial.println("[ERR] No such file 'cross.bmp' on microSD!");
+            // "[ERR] No such file 'cross.bmp' on microSD!");
             is_micro_sd_err = 1;
         }
 
         if (SD.exists("straight.bmp")) {
-            Serial.println("[OK] 'straight.bmp'");
+            // "[OK] 'straight.bmp'");
         } else {
-            Serial.println("[ERR] No such file 'straight.bmp' on microSD!");
+            // "[ERR] No such file 'straight.bmp' on microSD!");
             is_micro_sd_err = 1;
         }
 
@@ -254,6 +254,13 @@ void force_stop_handler()
 
 void test_individual_rj45_pins()
 {
+    lcd.setCursor(0, 1);
+    lcd.print("SND ");   // writes 4 chars
+    lcd.setCursor(5, 1);
+    lcd.print("->RCV "); // writes 6 chars
+
+
+
     for (int i = 0; i < 8; i++) {
         pinsSenderSocket[i] = true;
         write_to_sender_socket();
@@ -262,8 +269,27 @@ void test_individual_rj45_pins()
             return;
         }
 
-        lcd.setCursor(13, 1);
-        lcd.print(i + 1);
+
+        // Scrie indicele pinului pt SENDER
+        lcd.setCursor(4, 1);
+        lcd.print(i + 1);        // writes 1 digit
+
+        // Scrie indiciele pinului pe care RECEIVER ar trb in mod normal sa primeasca semnal
+        lcd.setCursor(11, 1);
+        if (cableType == CABLE_TYPE_CROSSOVER) {
+            // writes 1 digit
+            if (i == 0) lcd.print(3);
+            else if (i == 1) lcd.print(6);
+            else if (i == 2) lcd.print(1);
+            else if (i == 3) lcd.print(3);
+            else if (i == 4) lcd.print(5);
+            else if (i == 5) lcd.print(2);
+            else if (i == 6) lcd.print(7);
+            else if (i == 7) lcd.print(8);
+        } else {
+            lcd.print(i + 1);        // writes 1 digit
+        }
+
 
         // 1s pause betweem testing another RJ45 pin
         for (int j = 0; j < 10; j++) {
