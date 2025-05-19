@@ -178,17 +178,17 @@ void setup() {
 
 
     // Configurare pini pt shift register-ul 74HC165 (asociat receiver-ului):
-    DDRC &= ~(1 << PC1);   // input pin D15 -> register QH (serial out)
-    DDRC |= (1 << PC2);    // output pin D16 -> register !PL (parallel load)
-    DDRC |= (1 << PC3);    // output pin D17 -> register CP (clock) 
+    DDRC &= ~(1 << PC0);   // input pin D14 -> register QH (serial out)
+    DDRC |= (1 << PC1);    // output pin D15 -> register !PL (parallel load)
+    DDRC |= (1 << PC2);    // output pin D16 -> register CP (clock) 
     for (int i = 0; i < 8; i++) {
         pinsReceiverSocket[i] = false;
     }
 
 
     // Stare inițială a shift register-ului asociat receiver-ului
-    PORTC |= (1 << PC2);  // LOW pe pin D16 (register parallel load)
-    PORTC &= ~(1 << PC3);  // LOW pe pin D17 (register clock)
+    PORTC |= (1 << PC1);  // LOW pe pin D15 (register parallel load)
+    PORTC &= ~(1 << PC2);  // LOW pe pin D16 (register clock)
 
 
 
@@ -279,21 +279,21 @@ void force_stop_handler()
 
 void fetch_receiver_socket()
 {
-    PORTC &= ~(1 << PC2);  // LOW pe pin D16 (register parallel load)
+    PORTC &= ~(1 << PC1);  // LOW pe pin D15 (register parallel load)
     delayMicroseconds(5);
-    PORTC |= (1 << PC2);  // HIGH pe pin D16 (register parallel load)
+    PORTC |= (1 << PC1);  // HIGH pe pin D15 (register parallel load)
 
     // 2. Citește fiecare bit
     for (int i = 0; i < 8; i++) {
         // Shift register-ul transmite serial valorile,
         // incepand cu bitul D7 -> D6 -> ... -> D0 prin pinul QH
         // Se foloseste ordinea MSB -> trebuie inversata din cod
-        pinsReceiverSocket[7 - i] = PINC & (1 << PC1);   // read pin D15 (register serial out)
+        pinsReceiverSocket[7 - i] = PINC & (1 << PC0);   // read pin D14 (register serial out)
 
         // Pulseaza ceasul
-        PORTC |= (1 << PC3);  // HIGH pe pin D17 (register clock)
+        PORTC |= (1 << PC2);  // HIGH pe pin D16 (register clock)
         delayMicroseconds(5);
-        PORTC &= ~(1 << PC3);  // LOW pe pin D17 (register clock)
+        PORTC &= ~(1 << PC2);  // LOW pe pin D16 (register clock)
         delayMicroseconds(5);
     }
 }
@@ -441,5 +441,6 @@ void loop() {
     pressedBTN1 = false;
     pressedBTN2 = false;
     pressedBTN3 = false;
+
     delay(200);
 }
