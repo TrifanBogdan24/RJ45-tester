@@ -26,6 +26,8 @@ volatile bool pressedBTN1 = false;   // Blue button (switch cable type)
 volatile bool pressedBTN2 = false;   // Red button (force stop)
 volatile bool pressedBTN3 = false;   // White button (start tester)
 
+bool isRunningTest = false;
+
 // Pentru intreruperile pe PCINT
 volatile uint8_t lastPortD = 0;
 
@@ -42,7 +44,7 @@ bool pinsSenderSocket[8];
 
 // Intrerupere pe pinul D2 (BTN1)
 ISR(INT0_vect) {
-    if (pressedBTN1) return;
+    if (isRunningTest || pressedBTN1) return;
     cableType = !cableType;
     pressedBTN1 = true;
 }
@@ -428,6 +430,7 @@ void loop() {
 
 
     if (pressedBTN3) {
+        isRunningTest = true;
         lcd.clear();
         cable_type_first_line_lcd();
 
@@ -436,6 +439,7 @@ void loop() {
 
         test_individual_rj45_pins();
         init_sender_pins();
+        isRunningTest = false;
     }
 
     pressedBTN1 = false;

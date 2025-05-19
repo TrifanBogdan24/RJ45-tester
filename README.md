@@ -164,5 +164,10 @@ Am asociat fiecarui buton cate o intrerupere:
 Pt cablurile pe care le folosesc pe breadboard: <https://www.youtube.com/shorts/3qbz26m9SPA>
 
 
+[#13 How To Create Custom Symbols in KiCad 7.0 With KLC](https://www.youtube.com/watch?v=baCGoK8MuH0)
+
+
 Data-sheets:
 - [Arduino NANO pinout](https://docs.arduino.cc/resources/pinouts/A000005-full-pinout.pdf)
+
+
