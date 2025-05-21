@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
 #include <SD.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_ST7735.h>
 
 #define CABLE_TYPE_CROSSOVER        (bool) 0
 #define CABLE_TYPE_STRAIGHT_THROUGH (bool) 1
@@ -9,11 +11,18 @@
 #define PIN_MICRO_SD_MODULE_CS (int) 9   // Chip Select -> D9
 
 
-// Pini rezervati pe Arduino pt display-ul pe SPI:
+// Pini rezervati pe Arduino pt display-ul pe SPI (128x160):
 #define PIN_IMAGE_DIPSLAY_CS (int) 10  // Chip Select -> D10
 #define PIN_IMAGE_DISPLAY_RS (int) 14  // Register Select -> A0 (D14)
 
 
+
+// Pini pentru display-ul 128x160
+#define TFT_CS    10
+#define TFT_DC    A3
+#define TFT_RST   -1
+
+Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 
 // Set the LCD address
@@ -22,6 +31,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 // 0 = Straight-through ; 1 = Crossover
 volatile bool cableType = false;
+
 volatile bool pressedBTN1 = false;   // Blue button (switch cable type)
 volatile bool pressedBTN2 = false;   // Red button (force stop)
 volatile bool pressedBTN3 = false;   // White button (start tester)
@@ -171,6 +181,21 @@ void init_sender_pins()
 
 
 
+void draw_on_display()
+{
+    // Rectangle size
+    int rectW = 40;
+    int rectH = 30;
+
+    // Center position
+    int centerX = (tft.width() - rectW) / 2;
+    int centerY = (tft.height() - rectH) / 2;
+
+    // Draw filled red rectangle
+    tft.fillRect(centerX, centerY, rectW, rectH, ST77XX_RED);
+}
+
+
 void setup() {
     // Output pins pe Arduino pt shift register-ul 74HC595 (asociat sender-ului):
     DDRD |= (1 << PD6);   // pin D6 -> register data
@@ -194,7 +219,6 @@ void setup() {
 
 
 
-    Serial.begin(9600);
 
     cableType = false;
 
@@ -265,6 +289,12 @@ void setup() {
 
     // MicroSD is ready to go
 
+
+    // Init SPI 128x160 display
+    tft.initR(INITR_BLACKTAB);      // Initialize display
+    tft.setRotation(1);             // Optional: change to 0-3 based on setup
+    tft.fillScreen(ST77XX_BLACK);   // Clear screen
+    draw_on_display();
 }
 
 
