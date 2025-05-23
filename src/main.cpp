@@ -4,8 +4,9 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7735.h>
 
-#define CABLE_TYPE_CROSSOVER        (bool) 0
-#define CABLE_TYPE_STRAIGHT_THROUGH (bool) 1
+#define CABLE_TYPE_STRAIGHT_THROUGH (int) 0
+#define CABLE_TYPE_CROSSOVER        (int) 1
+#define CABLE_TYPE_ROLLOVER         (int) 2
 
 // Pini rezervati pe Arduino pt modul MicroSD:
 #define PIN_MICRO_SD_MODULE_CS (int) 9   // Chip Select -> D9
@@ -29,8 +30,8 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 
-// 0 = Straight-through ; 1 = Crossover
-volatile bool cableType = false;
+// 0 = Straight-through ; 1 = Crossover ; 2 = Rollover
+volatile int cableType = CABLE_TYPE_STRAIGHT_THROUGH;
 
 volatile bool pressedBTN1 = false;   // Blue button (switch cable type)
 volatile bool pressedBTN2 = false;   // Red button (force stop)
@@ -55,7 +56,7 @@ bool pinsSenderSocket[8];
 // Intrerupere pe pinul D2 (BTN1)
 ISR(INT0_vect) {
     if (isRunningTest || pressedBTN1) return;
-    cableType = !cableType;
+    cableType = (cableType + 1) % 3;
     pressedBTN1 = true;
 }
 
@@ -119,9 +120,11 @@ void cable_type_first_line_lcd()
     lcd.setCursor(0, 0);
     if (cableType == CABLE_TYPE_STRAIGHT_THROUGH) {
         lcd.print("Straight-through");
-    } else {
-        lcd.print("Cross-over      ");
-    }  
+    } else if (cableType == CABLE_TYPE_CROSSOVER) {
+        lcd.print("Crossover      ");
+    } else if (cableType == CABLE_TYPE_ROLLOVER) {
+        lcd.print("Rollover        ");
+    }
 }
 
 
@@ -134,8 +137,10 @@ void cable_mode_full_lcd()
 
     if (cableType == CABLE_TYPE_STRAIGHT_THROUGH) {
         lcd.print("Straight-through");
-    } else {
-        lcd.print("Cross-over");
+    } else if (cableType == CABLE_TYPE_CROSSOVER) {
+        lcd.print("Crossover      ");
+    } else if (cableType == CABLE_TYPE_ROLLOVER) {
+        lcd.print("Rollover        ");
     }
 }
 
@@ -219,7 +224,7 @@ void setup() {
 
 
 
-    cableType = false;
+    cableType = CABLE_TYPE_STRAIGHT_THROUGH;
 
     lcd.begin(16, 2);
     lcd.backlight();
@@ -335,18 +340,28 @@ bool is_correct_wiring(int pin_index)
     fetch_receiver_socket();
 
     if (cableType == CABLE_TYPE_CROSSOVER) {
-            if (pin_index == 0) return pinsReceiverSocket[2];
-            else if (pin_index == 1) return pinsReceiverSocket[5];
-            else if (pin_index == 2) return pinsReceiverSocket[0];
-            else if (pin_index == 3) return pinsReceiverSocket[2];
-            else if (pin_index == 4) return pinsReceiverSocket[3];
-            else if (pin_index == 5) return pinsReceiverSocket[1];
-            else if (pin_index == 6) return pinsReceiverSocket[6];
-            else if (pin_index == 7) return pinsReceiverSocket[7];
+        if (pin_index == 0) return pinsReceiverSocket[2];
+        else if (pin_index == 1) return pinsReceiverSocket[5];
+        else if (pin_index == 2) return pinsReceiverSocket[0];
+        else if (pin_index == 3) return pinsReceiverSocket[2];
+        else if (pin_index == 4) return pinsReceiverSocket[3];
+        else if (pin_index == 5) return pinsReceiverSocket[1];
+        else if (pin_index == 6) return pinsReceiverSocket[6];
+        else if (pin_index == 7) return pinsReceiverSocket[7];
     }
 
-    // for STRAIGHT_THROUGH cables
-    return pinsReceiverSocket[pin_index];
+    if (cableType == CABLE_TYPE_STRAIGHT_THROUGH) {
+        return pinsReceiverSocket[pin_index];
+    }
+
+
+    if (cableType == CABLE_TYPE_ROLLOVER) {
+        return pinsReceiverSocket[7 - pin_index];
+    }
+
+
+    // unknown cableType
+    return false;
 }
 
 
@@ -386,8 +401,10 @@ void test_individual_rj45_pins()
             else if (i == 5) lcd.print(2);
             else if (i == 6) lcd.print(7);
             else if (i == 7) lcd.print(8);
-        } else {
+        } else if (cableType == CABLE_TYPE_STRAIGHT_THROUGH) {
             lcd.print(i + 1);        // writes 1 digit
+        } else if (cableType == CABLE_TYPE_ROLLOVER) {
+            lcd.print(8 - i);       // writes 1 digit
         }
 
 
