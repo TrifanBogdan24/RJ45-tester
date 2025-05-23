@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
 #include <SD.h>
-#include "main_display.h"
+#include "tft_lcd.h"
 
 
 #define CABLE_TYPE_STRAIGHT_THROUGH (int) 0
@@ -18,6 +18,7 @@
 
 
 
+
 LiquidCrystal_I2C i2c_lcd(0x27, 16, 2);
 
 
@@ -29,6 +30,7 @@ volatile bool pressedBTN2 = false;   // Red button (force stop)
 volatile bool pressedBTN3 = false;   // White button (start tester)
 
 bool isRunningTest = false;
+bool isRunningAudioInstruction = false;
 
 // Pentru intreruperile pe PCINT
 volatile uint8_t lastPortD = 0;
@@ -46,21 +48,21 @@ bool pinsSenderSocket[8];
 
 // Intrerupere pe pinul D2 (BTN1)
 ISR(INT0_vect) {
-    if (isRunningTest || pressedBTN1) return;
-    cableType = (cableType + 1) % 3;
+    if (isRunningTest || isRunningAudioInstruction) return;
     pressedBTN1 = true;
 }
 
 
 // Intrerupere pe pinul D3 (BTN2)
 ISR(INT1_vect) {
-    if (pressedBTN2) return;
     pressedBTN2 = true;
 }
 
 
 
 ISR(PCINT2_vect) {
+    if (isRunningTest || isRunningAudioInstruction) return;
+
     uint8_t current = PIND;
     uint8_t changed = current ^ lastPortD;
 
@@ -180,6 +182,8 @@ void init_sender_pins()
 
 
 void setup() {
+    Serial.begin(9600);
+
     // Output pins pe Arduino pt shift register-ul 74HC595 (asociat sender-ului):
     DDRD |= (1 << PD6);   // pin D6 -> register data
     DDRD |= (1 << PD7);   // pin D7 -> register latch
@@ -251,26 +255,17 @@ void setup() {
     do {
         is_micro_sd_err = 0;
 
-        if (SD.exists("cross.bmp")) {
-            // "[OK] 'cross.bmp'");
-        } else {
-            // "[ERR] No such file 'cross.bmp' on microSD!");
+        if (!SD.exists("instruct.wav")) {
+            // [ERR] No such file 'instruct.wav' on microSD!
             is_micro_sd_err = 1;
         }
 
-        if (SD.exists("straight.bmp")) {
-            // "[OK] 'straight.bmp'");
-        } else {
-            // "[ERR] No such file 'straight.bmp' on microSD!");
-            is_micro_sd_err = 1;
-        }
-
-        delay(200);
+        delay(1000);
     } while (is_micro_sd_err);
 
     // MicroSD is ready to go
 
-
+    init_tft_lcd();
     draw_straight_through_wiring();
 }
 
@@ -430,25 +425,25 @@ void test_individual_rj45_pins()
     i2c_lcd.print("Done            ");
     delay(2000);
     write_full_cable_mode_on_i2c_lcd();
-}
 
-void test_all_rj45_pins()
-{
-    // TODO:
 }
 
 
 
 void loop() {
-    if (pressedBTN1) {
+
+    if (pressedBTN1 && !pressedBTN2 && pressedBTN3) {
+        // Butoanele alb si albastru au fost apasate simultan: porneste instructiunile audio
+        // TODO: add logic
+    } else if (pressedBTN1 && !pressedBTN2 && !pressedBTN3) {
+        // Butonul albastru a fost apasat: schimba tipul de cablare
+        cableType = (cableType + 1) % 3;
         write_full_cable_mode_on_i2c_lcd();
         if (cableType == CABLE_TYPE_STRAIGHT_THROUGH) draw_straight_through_wiring();
         else if (cableType == CABLE_TYPE_CROSSOVER) draw_crossover_wiring();
         else if (cableType == CABLE_TYPE_ROLLOVER) draw_rollover_wiring();
-    }
-
-
-    if (pressedBTN3) {
+    } else if (pressedBTN3 && !pressedBTN1 && !pressedBTN2) {
+        // Butonul alb a fost apast: porneste tester-ul
         isRunningTest = true;
         i2c_lcd.clear();
         write_cable_type_on_first_line_of_i2c_lcd();
@@ -464,6 +459,5 @@ void loop() {
     pressedBTN1 = false;
     pressedBTN2 = false;
     pressedBTN3 = false;
-
     delay(200);
 }

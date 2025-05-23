@@ -57,7 +57,8 @@ void init_tft_lcd()
 */
 void draw_straight_through_wiring()
 {
-    init_tft_lcd();
+    tft_lcd.fillScreen(ST77XX_BLACK);   // Clear screen
+
 
     const int BOX_WIDTH = 12;
     const int BOX_HEIGHT = 10;
@@ -199,7 +200,7 @@ void draw_straight_through_wiring()
 */
 void draw_crossover_wiring()
 {
-    init_tft_lcd();
+    tft_lcd.fillScreen(ST77XX_BLACK);   // Clear screen
 
     const int BOX_WIDTH = 12;
     const int BOX_HEIGHT = 10;
@@ -278,7 +279,7 @@ void draw_crossover_wiring()
 */
 void draw_rollover_wiring()
 {
-    init_tft_lcd();
+    tft_lcd.fillScreen(ST77XX_BLACK);   // Clear screen
 
     const int BOX_WIDTH = 12;
     const int BOX_HEIGHT = 10;

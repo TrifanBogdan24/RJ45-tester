@@ -242,6 +242,14 @@ Pt cablurile pe care le folosesc pe breadboard: <https://www.youtube.com/shorts/
 
 [#13 How To Create Custom Symbols in KiCad 7.0 With KLC](https://www.youtube.com/watch?v=baCGoK8MuH0)
 
+<https://www.narakeet.com/> transforma un text intr-un speech (*.txt -> *.mp3).
+<https://audio.online-convert.com/convert-to-wav> transforma *.mp3 -> *.wav
+
+
+Specificatii folosite la generarea fisierului **\*.wav**:
+- Bit resolution: 8-Bit
+- Audio frequency: 16 kHz
+- Audio channels: Mono
 
 Data-sheets:
 - [Arduino NANO pinout](https://docs.arduino.cc/resources/pinouts/A000005-full-pinout.pdf)
