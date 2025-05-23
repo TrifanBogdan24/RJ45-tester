@@ -18,9 +18,7 @@
 
 
 
-
-// Set the LCD address
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+LiquidCrystal_I2C i2c_lcd(0x27, 16, 2);
 
 
 // 0 = Straight-through ; 1 = Crossover ; 2 = Rollover
@@ -108,32 +106,32 @@ void beep_okay()
     }
 }
 
-void cable_type_first_line_lcd()
+void write_cable_type_on_first_line_of_i2c_lcd()
 {
-    lcd.setCursor(0, 0);
+    i2c_lcd.setCursor(0, 0);
     if (cableType == CABLE_TYPE_STRAIGHT_THROUGH) {
-        lcd.print("Straight-through");
+        i2c_lcd.print("Straight-through");
     } else if (cableType == CABLE_TYPE_CROSSOVER) {
-        lcd.print("Crossover      ");
+        i2c_lcd.print("Crossover      ");
     } else if (cableType == CABLE_TYPE_ROLLOVER) {
-        lcd.print("Rollover        ");
+        i2c_lcd.print("Rollover        ");
     }
 }
 
 
-void cable_mode_full_lcd()
+void write_full_cable_mode_on_i2c_lcd()
 {
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Mode:");
-    lcd.setCursor(0, 1);
+    i2c_lcd.clear();
+    i2c_lcd.setCursor(0, 0);
+    i2c_lcd.print("Mode:");
+    i2c_lcd.setCursor(0, 1);
 
     if (cableType == CABLE_TYPE_STRAIGHT_THROUGH) {
-        lcd.print("Straight-through");
+        i2c_lcd.print("Straight-through");
     } else if (cableType == CABLE_TYPE_CROSSOVER) {
-        lcd.print("Crossover      ");
+        i2c_lcd.print("Crossover      ");
     } else if (cableType == CABLE_TYPE_ROLLOVER) {
-        lcd.print("Rollover        ");
+        i2c_lcd.print("Rollover        ");
     }
 }
 
@@ -205,10 +203,10 @@ void setup() {
 
     cableType = CABLE_TYPE_STRAIGHT_THROUGH;
 
-    lcd.begin(16, 2);
-    lcd.backlight();
+    i2c_lcd.begin(16, 2);
+    i2c_lcd.backlight();
 
-    cable_mode_full_lcd();
+    write_full_cable_mode_on_i2c_lcd();
 
 
     // Input pins: D1 (for BTN1), D2 (for BTN2), D3 (for BTN3)
@@ -281,12 +279,12 @@ void setup() {
 
 void force_stop_handler()
 {
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Force stop!");
+    i2c_lcd.clear();
+    i2c_lcd.setCursor(0, 0);
+    i2c_lcd.print("Force stop!");
     init_sender_pins();
     delay(2000);
-    cable_mode_full_lcd();
+    write_full_cable_mode_on_i2c_lcd();
 }
 
 void fetch_receiver_socket()
@@ -343,10 +341,10 @@ bool is_correct_wiring(int pin_index)
 
 void test_individual_rj45_pins()
 {
-    lcd.setCursor(0, 1);
-    lcd.print("SND ");   // writes 4 chars
-    lcd.setCursor(5, 1);
-    lcd.print("->RCV "); // writes 6 chars
+    i2c_lcd.setCursor(0, 1);
+    i2c_lcd.print("SND ");   // writes 4 chars
+    i2c_lcd.setCursor(5, 1);
+    i2c_lcd.print("->RCV "); // writes 6 chars
 
 
 
@@ -360,27 +358,27 @@ void test_individual_rj45_pins()
 
 
         // Scrie indicele pinului pt SENDER
-        lcd.setCursor(4, 1);
-        lcd.print(i + 1);        // writes 1 digit
-        lcd.setCursor(13, 1);
-        lcd.print("   ");
+        i2c_lcd.setCursor(4, 1);
+        i2c_lcd.print(i + 1);        // writes 1 digit
+        i2c_lcd.setCursor(13, 1);
+        i2c_lcd.print("   ");
 
         // Scrie indiciele pinului pe care RECEIVER ar trb in mod normal sa primeasca semnal
-        lcd.setCursor(11, 1);
+        i2c_lcd.setCursor(11, 1);
         if (cableType == CABLE_TYPE_CROSSOVER) {
             // writes 1 digit
-            if (i == 0) lcd.print(3);
-            else if (i == 1) lcd.print(6);
-            else if (i == 2) lcd.print(1);
-            else if (i == 3) lcd.print(4);
-            else if (i == 4) lcd.print(5);
-            else if (i == 5) lcd.print(2);
-            else if (i == 6) lcd.print(7);
-            else if (i == 7) lcd.print(8);
+            if (i == 0) i2c_lcd.print(3);
+            else if (i == 1) i2c_lcd.print(6);
+            else if (i == 2) i2c_lcd.print(1);
+            else if (i == 3) i2c_lcd.print(4);
+            else if (i == 4) i2c_lcd.print(5);
+            else if (i == 5) i2c_lcd.print(2);
+            else if (i == 6) i2c_lcd.print(7);
+            else if (i == 7) i2c_lcd.print(8);
         } else if (cableType == CABLE_TYPE_STRAIGHT_THROUGH) {
-            lcd.print(i + 1);        // writes 1 digit
+            i2c_lcd.print(i + 1);        // writes 1 digit
         } else if (cableType == CABLE_TYPE_ROLLOVER) {
-            lcd.print(8 - i);       // writes 1 digit
+            i2c_lcd.print(8 - i);       // writes 1 digit
         }
 
 
@@ -403,13 +401,13 @@ void test_individual_rj45_pins()
         
         delay(20);  // un mic delay pt a astepta semnalul pe cablu
         if (is_correct_wiring(i)) {
-            lcd.setCursor(13, 1);
-            lcd.print(" OK");
+            i2c_lcd.setCursor(13, 1);
+            i2c_lcd.print(" OK");
             beep_okay();
             delay(340);
         } else {
-            lcd.setCursor(13, 1);
-            lcd.print("NOK");
+            i2c_lcd.setCursor(13, 1);
+            i2c_lcd.print("NOK");
             beep_not_okay();
         }
   
@@ -428,11 +426,11 @@ void test_individual_rj45_pins()
 
 
     init_sender_pins();
-    cable_type_first_line_lcd();
-    lcd.setCursor(0, 1);
-    lcd.print("Done            ");
+    write_cable_type_on_first_line_of_i2c_lcd();
+    i2c_lcd.setCursor(0, 1);
+    i2c_lcd.print("Done            ");
     delay(2000);
-    cable_mode_full_lcd();
+    write_full_cable_mode_on_i2c_lcd();
 }
 
 void test_all_rj45_pins()
@@ -444,17 +442,20 @@ void test_all_rj45_pins()
 
 void loop() {
     if (pressedBTN1) {
-        cable_mode_full_lcd();
+        write_full_cable_mode_on_i2c_lcd();
+        if (cableType == CABLE_TYPE_STRAIGHT_THROUGH) draw_straight_through_wiring();
+        else if (cableType == CABLE_TYPE_CROSSOVER) draw_crossover_wiring();
+        else if (cableType == CABLE_TYPE_ROLLOVER) draw_rollover_wiring();
     }
 
 
     if (pressedBTN3) {
         isRunningTest = true;
-        lcd.clear();
-        cable_type_first_line_lcd();
+        i2c_lcd.clear();
+        write_cable_type_on_first_line_of_i2c_lcd();
 
-        lcd.setCursor(0, 1);
-        lcd.print("Testing pin: ");
+        i2c_lcd.setCursor(0, 1);
+        i2c_lcd.print("Testing pin: ");
 
         test_individual_rj45_pins();
         init_sender_pins();
