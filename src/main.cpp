@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
 #include <SD.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_ST7735.h>
+#include "main_display.h"
+
 
 #define CABLE_TYPE_STRAIGHT_THROUGH (int) 0
 #define CABLE_TYPE_CROSSOVER        (int) 1
@@ -17,13 +17,6 @@
 #define PIN_IMAGE_DISPLAY_RS (int) 14  // Register Select -> A0 (D14)
 
 
-
-// Pini pentru display-ul 128x160
-#define TFT_CS    10
-#define TFT_DC    A3
-#define TFT_RST   -1
-
-Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 
 // Set the LCD address
@@ -186,19 +179,6 @@ void init_sender_pins()
 
 
 
-void draw_on_display()
-{
-    // Rectangle size
-    int rectW = 40;
-    int rectH = 30;
-
-    // Center position
-    int centerX = (tft.width() - rectW) / 2;
-    int centerY = (tft.height() - rectH) / 2;
-
-    // Draw filled red rectangle
-    tft.fillRect(centerX, centerY, rectW, rectH, ST77XX_RED);
-}
 
 
 void setup() {
@@ -221,7 +201,6 @@ void setup() {
     // Stare inițială a shift register-ului asociat receiver-ului
     PORTC |= (1 << PC1);  // LOW pe pin D15 (register parallel load)
     PORTC &= ~(1 << PC2);  // LOW pe pin D16 (register clock)
-
 
 
     cableType = CABLE_TYPE_STRAIGHT_THROUGH;
@@ -294,11 +273,8 @@ void setup() {
     // MicroSD is ready to go
 
 
-    // Init SPI 128x160 display
-    tft.initR(INITR_BLACKTAB);      // Initialize display
-    tft.setRotation(1);             // Optional: change to 0-3 based on setup
-    tft.fillScreen(ST77XX_BLACK);   // Clear screen
-    draw_on_display();
+    init_main_display();
+    draw_straight_through_wiring();
 }
 
 

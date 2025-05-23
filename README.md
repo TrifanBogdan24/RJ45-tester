@@ -222,6 +222,10 @@ Descrierile functiilor:
   - Ruleaza `delay()`
 
 
+```c
+tft.fillRect(x_upper_left_corner, y_upper_left_corner, width, height, ST77XX_<color>);
+```
+
 ![img](./images/rj45-sw-code-img-01.png)
 ![img](./images/rj45-sw-code-img-02.png)
 ![img](./images/rj45-sw-code-img-03.png)
