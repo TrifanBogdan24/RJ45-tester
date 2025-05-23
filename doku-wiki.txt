@@ -7,7 +7,7 @@
 Vă amintiți primul laborator de **RL**?
 
 Acolo am învățat cum să realizăm un **cablu UTP** pentru rețele Ethernet,
-Procesul poarta numele de **sertiazare**.
+Procesul poarta numele de **sertizare**.
 După realizarea cablului, acesta trebuie verificat ca functioneaza corect - adică dacă are continuitate.
 
 Testarea se face folosind un dispozitiv dedicat.
@@ -135,7 +135,76 @@ Repo GitHub: <https://github.com/TrifanBogdan24/RJ45-tester> - codul sursa se ga
 
 Am asociat fiecarui buton cate o intrerupere:
   * Butonul **albastru** - intreruperea **INT0** - schimba tipul de cablare (crossover/straigh-through)
-  * Butonul **alb** - intreruperea **INT1** - porneste algoritmul de testare:
-    * Mai intai trimite cate un semnal (secvential) catre fiecare pin al soclului RJ45 de testare (LED-urile asociate se vor aprinde) 
-  * Butonul **rosu** - intreruperea **PCINT20** (din **PCINT2_vect**) - opreste fortat rularea testului
+  * Butonul **rosu** - intreruperea **INT1** - opreste fortat rularea testului
+  * Butonul **alb** - intreruperea **PCINT20** (din **PCINT2_vect**)  - porneste algoritmul de testare:
+
+Descrierile functiilor:
+  * **ISR(INT0_vect)**:
+    * rutina de tratare a intreruperii, generata la apasarea butonului **albastru** (schimba tipul de cablare)
+    * Marcheaza flag-ul **volatile bool pressedBTN1**
+  * **ISR(INT1_vect)**: 
+    * rutina de tratare a intreruperii, generata la apasarea butonului **rosu** (oprirea fortata a algoritmului de testare)
+    * Marcheaza flag-ul **volatile bool pressedBTN2**
+  * **ISR(PCINT2_vect)**:
+    * rutina de tratare a intreruperii, generata la apasarea butonului **alb** (pornirea algoritmului de testare)
+    * Marcheaza flag-ul **volatile bool pressedBTN3**
+  * **void beep_okay()**:
+    * controleaza buzzer-ul sa emita bazait scurt, in semn ca totul este in regula
+  * **void beep_not_okay()**:
+    * controleaza buzzer-ul sa emita un semnal sonor de eroare
+  * **void cable_type_first_line_lcd()**:
+    * scrie tipul de cablare pe prima linia a LCD-ului de rezolutie 16x02
+  * **void cable_mode_full_lcd()**:
+    * scrie pe textul "Mode:" pe prima linia a display-ului secundar (cel pe I2C, de 16x02),
+    * iar pe a doua, tipul de cablare
+  * **void force_stop_handler()**:
+    * Functia este apelata in urma apasarii butonului **rosu**.
+    * Opreste fortat algoritmul de testare,
+    * dar nu inainte de a afisa pe ecranul LCD pe I2C un mesaj sugestiv in acest sens
+    * **lcd.print("Force stop!");**
+  * **void write_to_sender_socket()**:
+    * Variabila **bool pinsSenderSocket[8]** retine starea pinilor din mufa RJ-45 de transmisie
+    * Functia scrie valorile din **bool pinsSenderSocket[8]** in shift register-ul **74HC595**,
+    * Scrierea (chiar si pe un singur pin) al socket-ului sender presupune scrierea tuturor celor 8 valori catre **shift register**, in ordine inversa (intrucat acesta foloseste **MSB**: prima valoare primita va fi asociata ultimului pin)
+  * **void init_sender_pins()**:
+    * Este apelata la pornirea micro-controler-ului
+    * pentru a trata starea initiala indefinita
+    * (uneori LED-uri se pot aprinde aleator, fara ca eu nici macar sa fi scris ceva in shift register)
+    * a shift register-ului **74HC595**, asociat socket-ului sender.
+  * **void fetch_receiver_socket()**:
+    * Citeste valorile de pe shift register-ul **74HC165** (asociat socket-ului receiver)
+    * si le scrie in variabila **bool pinsReceiverSocket[8];**
+  * **bool is_correct_wiring(int pin_index)**:
+    * Apeleaza **is_correct_wiring** pentru a citi semnalele de pinii socket-ului receiver
+    * Si verifica daca valorile corespund unei cablari corecte, in raport cu indexul pinului activat pe mufa RJ-45 de transmisie
+  * **int test_individual_rj45_pins()**:
+    * Algoritmul propriu zis de testare
+    * Parcurge iterativ, de la 1 la 8, toti pinii socket-ului sender si
+      * Scrie pe ecranul secundar (16x02): modul de cablare, indexul pinului RJ-45 de transmisie si indexul corect pe care se asteapta sa primeasca semnal de pe pinul RJ-45 de receptie
+      * Scrie "1 logic" in iesirea (shift register-ului) **74HC595** corespunzatoare pinului ales: lucru care va produce aprinderea unui LED
+      * Ruleaza un mic **delay()** pentru a ma asigura ca semnalul are timp sa ajunga de la un capat la altul
+      * Apeleaza functia **is_correct_wiring** pentru a afla daca semnalul ajuns unde trebuie:
+        * Daca da, va scrie in *"OK"* in coltul dreapta-jos al display-ului secundar si va emite un bapait scurt
+        * Altfel, va scrie *"NOK"* pe LCD si va produce un sunet de avertistment
+    * Functia verifica constant daca butonul **rosu** a fost apasat (flag-ul **pressedBTN2** a fost setat), caz in care opreste fortat algorimul de testare, apeland **force_stop_handler()** in cod
+  * **setup()**
+    * configureza pinii de Input/Outpt
+    * activeaza intreruperile
+    * initiaza display-urile
+    * scrie in registrii
+  * **loop()**
+    * Verifica si trateaza flag-urile **pressedBTN1** si **pressedBTN3**
+    * Reseteaza flag-urile
+    * Ruleaza **delay()**
+<note tip>NOTA: flag-ul **pressedBTN2** este tratat in interiorul algoritmului de testare (in functia **test_individual_rj45_pins()**)</note>
+
+
+
+{{:pm:prj2025:ajipa:rj45-sw-code-img-01.png?400}}
+{{:pm:prj2025:ajipa:rj45-sw-code-img-02.png?500}}
+{{:pm:prj2025:ajipa:rj45-sw-code-img-03.png?500}}
+{{:pm:prj2025:ajipa:rj45-sw-code-img-04.png?600}}
+{{:pm:prj2025:ajipa:rj45-sw-code-img-05.png?400}}
+{{:pm:prj2025:ajipa:rj45-sw-code-img-06.png?500}}
+{{:pm:prj2025:ajipa:rj45-sw-code-img-07.png?400}}
 

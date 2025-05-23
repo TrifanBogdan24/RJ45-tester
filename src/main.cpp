@@ -219,7 +219,6 @@ void setup() {
 
 
 
-
     cableType = false;
 
     lcd.begin(16, 2);
@@ -390,9 +389,6 @@ void test_individual_rj45_pins()
         } else {
             lcd.print(i + 1);        // writes 1 digit
         }
-
-
-
 
 
 
