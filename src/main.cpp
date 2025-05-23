@@ -271,7 +271,6 @@ void setup() {
     // MicroSD is ready to go
 
 
-    init_main_display();
     draw_straight_through_wiring();
 }
 
