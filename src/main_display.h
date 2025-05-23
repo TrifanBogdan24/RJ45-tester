@@ -4,12 +4,16 @@
 
 // Rezolutie: 160x128
 
-// Pini pentru display-ul 128x160
+// Pini pentru display-ul 160x128
 #define TFT_CS    10
 #define TFT_DC    A3
 #define TFT_RST   -1
 
+#define BROWN_COLOR   tft.color565(112, 55, 14)
+
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
+
+
 
 
 
@@ -69,6 +73,7 @@ void draw_straight_through_wiring()
 
 
     const int Y_BASE_OFFSET = (tft.height() - 8 * BOX_HEIGHT - 7 * Y_OFFSET_BTWN_BOXES) / 2;
+
     
     
 
@@ -107,13 +112,13 @@ void draw_straight_through_wiring()
 
     // Pin 7   white-brown  <-> white-brown
     tft.fillRect(X_OFFSET_FIRST + 0                         , Y_BASE_OFFSET + 6 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, ST77XX_WHITE);
-    tft.fillRect(X_OFFSET_FIRST + BOX_WIDTH                 , Y_BASE_OFFSET + 6 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, ST77XX_ORANGE);
+    tft.fillRect(X_OFFSET_FIRST + BOX_WIDTH                 , Y_BASE_OFFSET + 6 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, BROWN_COLOR);
     tft.fillRect(X_OFFSET_FIRST + 2 * BOX_WIDTH + WIRE_WIDTH, Y_BASE_OFFSET + 6 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, ST77XX_WHITE);
-    tft.fillRect(X_OFFSET_FIRST + 3 * BOX_WIDTH + WIRE_WIDTH, Y_BASE_OFFSET + 6 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, ST77XX_ORANGE);
+    tft.fillRect(X_OFFSET_FIRST + 3 * BOX_WIDTH + WIRE_WIDTH, Y_BASE_OFFSET + 6 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, BROWN_COLOR);
 
     // Pin 8   brown        <-> brown
-    tft.fillRect(X_OFFSET_FIRST + 0                         , Y_BASE_OFFSET + 7 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH * 2, BOX_HEIGHT, ST77XX_ORANGE);
-    tft.fillRect(X_OFFSET_FIRST + 2 * BOX_WIDTH + WIRE_WIDTH, Y_BASE_OFFSET + 7 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH * 2, BOX_HEIGHT, ST77XX_ORANGE);
+    tft.fillRect(X_OFFSET_FIRST + 0                         , Y_BASE_OFFSET + 7 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH * 2, BOX_HEIGHT, BROWN_COLOR);
+    tft.fillRect(X_OFFSET_FIRST + 2 * BOX_WIDTH + WIRE_WIDTH, Y_BASE_OFFSET + 7 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH * 2, BOX_HEIGHT, BROWN_COLOR);
 
 
 
@@ -157,13 +162,13 @@ void draw_straight_through_wiring()
 
     // Pin 7   white-brown  <-> white-brown
     tft.fillRect(X_OFFSET_SECOND + 0                         , Y_BASE_OFFSET + 6 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, ST77XX_WHITE);
-    tft.fillRect(X_OFFSET_SECOND + BOX_WIDTH                 , Y_BASE_OFFSET + 6 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, ST77XX_ORANGE);
+    tft.fillRect(X_OFFSET_SECOND + BOX_WIDTH                 , Y_BASE_OFFSET + 6 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, BROWN_COLOR);
     tft.fillRect(X_OFFSET_SECOND + 2 * BOX_WIDTH + WIRE_WIDTH, Y_BASE_OFFSET + 6 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, ST77XX_WHITE);
-    tft.fillRect(X_OFFSET_SECOND + 3 * BOX_WIDTH + WIRE_WIDTH, Y_BASE_OFFSET + 6 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, ST77XX_ORANGE);
+    tft.fillRect(X_OFFSET_SECOND + 3 * BOX_WIDTH + WIRE_WIDTH, Y_BASE_OFFSET + 6 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, BROWN_COLOR);
 
     // Pin 8   brown        <-> brown
-    tft.fillRect(X_OFFSET_SECOND + 0                         , Y_BASE_OFFSET + 7 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH * 2, BOX_HEIGHT, ST77XX_ORANGE);
-    tft.fillRect(X_OFFSET_SECOND + 2 * BOX_WIDTH + WIRE_WIDTH, Y_BASE_OFFSET + 7 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH * 2, BOX_HEIGHT, ST77XX_ORANGE);
+    tft.fillRect(X_OFFSET_SECOND + 0                         , Y_BASE_OFFSET + 7 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH * 2, BOX_HEIGHT, BROWN_COLOR);
+    tft.fillRect(X_OFFSET_SECOND + 2 * BOX_WIDTH + WIRE_WIDTH, Y_BASE_OFFSET + 7 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH * 2, BOX_HEIGHT, BROWN_COLOR);
 }
 
 
