@@ -1,15 +1,13 @@
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
 #include <SD.h>
-#include "tft_lcd.h"
+#include "spi_lcd.h"
 
 
 #define CABLE_TYPE_STRAIGHT_THROUGH (int) 0
 #define CABLE_TYPE_CROSSOVER        (int) 1
 #define CABLE_TYPE_ROLLOVER         (int) 2
 
-// Pini rezervati pe Arduino pt modul MicroSD:
-#define PIN_MICRO_SD_MODULE_CS (int) 9   // Chip Select -> D9
 
 
 // Pini rezervati pe Arduino pt display-ul pe SPI (128x160):
@@ -23,7 +21,7 @@ LiquidCrystal_I2C i2c_lcd(0x27, 16, 2);
 
 
 // 0 = Straight-through ; 1 = Crossover ; 2 = Rollover
-volatile int cableType = CABLE_TYPE_STRAIGHT_THROUGH;
+int cableType = CABLE_TYPE_STRAIGHT_THROUGH;
 
 volatile bool pressedBTN1 = false;   // Blue button (switch cable type)
 volatile bool pressedBTN2 = false;   // Red button (force stop)
@@ -245,25 +243,6 @@ void setup() {
     // It's better to double-check
     init_sender_pins();
 
-    while (!SD.begin(PIN_MICRO_SD_MODULE_CS)) {
-        // "[ERR] SD init failed!");
-        delay(200);
-    }
-    // "[OK] SD init success!");
-
-    int is_micro_sd_err = 0;
-    do {
-        is_micro_sd_err = 0;
-
-        if (!SD.exists("instruct.wav")) {
-            // [ERR] No such file 'instruct.wav' on microSD!
-            is_micro_sd_err = 1;
-        }
-
-        delay(1000);
-    } while (is_micro_sd_err);
-
-    // MicroSD is ready to go
 
     init_tft_lcd();
     draw_straight_through_wiring();

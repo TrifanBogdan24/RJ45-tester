@@ -73,7 +73,7 @@ Acolo isi va atinge adevaratul potential.
 
 Schema bloc:
 
-![img](images/rj45-tester-schema-bloc.jpg)
+![img](./images/rj45-tester-schema-bloc.jpg)
 
 
 
@@ -87,10 +87,7 @@ Schema bloc:
 - 1x [74HC595 8-bit Shift Register](https://ardushop.ro/ro/circuite-integrate/1657-ic-shift-register-sn74hc595n-74hc595-6427854024978.html) (fiecare are 8 pini de iesiri)
 - 1x [74HC165 8-bit Shift Register](https://ardushop.ro/ro/electronica/683-74hc165-8-bit-shift-register-6427854008602.html) (8 pini de intrare)
 - [LCD 16x02 cu interfata I2C](https://www.optimusdigital.ro/ro/optoelectronice-lcd-uri/2894-lcd-cu-interfata-i2c-si-backlight-albastru.html?search_query=0104110000003584&results=1)
-- [Modul LCD SPI 128x160](https://ardushop.ro/ro/electronica/2124-modul-lcd-spi-128x160-6427854032546.html)
-- [MicroSD module](https://ardushop.ro/ro/module/1553-groundstudio-microsd-module-6427854023056.html)
-- [Card MicroSD 16 GB](https://www.optimusdigital.ro/ro/memorii/8678-card-microsd-original-de-16-gb-cu-noobs-compatibil-cu-raspberry-pi-4-model-b-varianta-bulk.html)
-    - Nu am găsit un card mai mic 🙁
+- [Modul LCD SPI 160x128](https://ardushop.ro/ro/electronica/2124-modul-lcd-spi-128x160-6427854032546.html)
 - 16x [LED Verde 3mm cu Lentile Difuze](https://www.optimusdigital.ro/ro/optoelectronice-led-uri/697-led-verde-de-3-mm-cu-lentile-difuze.html?search_query=0104210000006209&results=1)
 - 16x Rezistente 220 Ω (pt LED-uri)
 - [Modul Buzzer Pasiv](https://www.optimusdigital.ro/ro/componente-electronice/12598-modul-buzzer-pasiv.html?search_query=0104110000082985&results=1)
@@ -144,8 +141,7 @@ vor fi ignorate (la nivel hardware) de aceste filtre.
 Biblioteci folosite:
 - **Arduino.h**: biblioteca default pentru placa de dezvoltare
 - **LiquidCrystal_I2C.h**: imi permite scrierea caracterelor pe ecranul secundar (cel pe I2C, de rezolutie 16x02)
-- **SD.h**: permite comunicarea cu modulul de card microSD si interactiunea cu sistemul de fisiere de pe card
-- **Adafruit_GFX.h**, **Adafruit_ST7735.h**, **Adafruit_ImageReader.h**: pentru interactiunea cu display-ul principal (cel pe SPI, de rezolutie 128x160)
+- **Adafruit_GFX.h**, **Adafruit_ST7735.h**: pentru interactiunea cu display-ul principal (cel pe SPI, de rezolutie 160x128)
 
 Repo GitHub: <https://github.com/TrifanBogdan24/RJ45-tester> - codul sursa se gaseste in folderul **src/**.
 
