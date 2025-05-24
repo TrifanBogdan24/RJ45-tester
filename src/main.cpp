@@ -179,8 +179,6 @@ void init_sender_pins()
 
 
 void setup() {
-    Serial.begin(9600);
-
     // Output pins pe Arduino pt shift register-ul 74HC595 (asociat sender-ului):
     DDRD |= (1 << PD6);   // pin D6 -> register data
     DDRD |= (1 << PD7);   // pin D7 -> register latch
