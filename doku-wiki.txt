@@ -63,33 +63,175 @@ Schema bloc:
 
 ==== Lista Componente ====
 
-    * [[https://www.emag.ro/placa-de-dezvoltare-nano-v3-0-atmega328p-ch340-cu-cablu-usb-1414dr/pd/DTDC88YBM/?ref=history-shopping_415312802_171246_1|Arduino Nano V3.0]]
-    * 2x [[https://www.aliexpress.com/item/1005006421216570.html?spm=a2g0o.productlist.main.1.7a83OBnaOBnaHZ&algo_pvid=00f91974-4220-41f5-8c1c-f9375b3e09d7&pdp_ext_f=%7B%22order%22%3A%22150%22%2C%22eval%22%3A%221%22%7D&utparam-url=scene%3Asearch%7Cquery_from%3A|RJ45 Adapter Board + Breakout Board + Pin Header]] (de pe AliExpress 😊)
-    * 1x [[https://ardushop.ro/ro/circuite-integrate/1657-ic-shift-register-sn74hc595n-74hc595-6427854024978.html|74HC595 8-bit Shift Register]] (fiecare are 8 pini de iesiri)
-    * 1x [[https://ardushop.ro/ro/electronica/683-74hc165-8-bit-shift-register-6427854008602.html|74HC165 8-bit Shift Register]] (8 pini de intrare)
-    * [[https://www.optimusdigital.ro/ro/optoelectronice-lcd-uri/2894-lcd-cu-interfata-i2c-si-backlight-albastru.html?search_query=0104110000003584&results=1|LCD 16x02 cu interfata I2C]]
-    * [[https://ardushop.ro/ro/electronica/2124-modul-lcd-spi-128x160-6427854032546.html|Modul LCD SPI 128x160]]
-    * 16x [[https://www.optimusdigital.ro/ro/optoelectronice-led-uri/697-led-verde-de-3-mm-cu-lentile-difuze.html?search_query=0104210000006209&results=1|LED Verde cu lentile difuze]]
-    * [[https://www.optimusdigital.ro/ro/componente-electronice/12598-modul-buzzer-pasiv.html?search_query=0104110000082985&results=1|Modul Buzzer Pasiv]]
-    * 3x [[https://www.optimusdigital.ro/ro/butoane-i-comutatoare/1115-buton-cu-capac-rotund-alb.html?search_query=buton+cu+capac&results=29|Buton cu Capac Rotund]]
-    * 3x Rezistente (de PULL-UP) de 10 kΩ (pt butoane)
-    * 3x Condensatoare ceramice de 47nF (pt butoane)
-    * 3 breadboard-uri 830 puncte
 
 
+^ Componenta ^ Pret ^
+| [[https://www.emag.ro/placa-de-dezvoltare-nano-v3-0-atmega328p-ch340-cu-cablu-usb-1414dr/pd/DTDC88YBM/?ref=history-shopping_415312802_171246_1|Arduino Nano V3.0]] | ~40 lei |
+| 2x [[https://www.aliexpress.com/item/1005006421216570.html?spm=a2g0o.productlist.main.1.7a83OBnaOBnaHZ&algo_pvid=00f91974-4220-41f5-8c1c-f9375b3e09d7&pdp_ext_f=%7B%22order%22%3A%22150%22%2C%22eval%22%3A%221%22%7D&utparam-url=scene%3Asearch%7Cquery_from%3A|RJ45 Adapter Board + Breakout Board + Pin Header]] (de pe AliExpress 😊) | ~8 lei fiecare |
+| 1x [[https://ardushop.ro/ro/circuite-integrate/1657-ic-shift-register-sn74hc595n-74hc595-6427854024978.html|74HC595 8-bit Shift Register]] (1 pin intrare, 8 pini iesire) | 4 lei |
+| 1x [[https://ardushop.ro/ro/electronica/683-74hc165-8-bit-shift-register-6427854008602.html|74HC165 8-bit Shift Register]] (1 pin iesire, 8 pini intrare) | 8 lei |
+| [[https://www.optimusdigital.ro/ro/optoelectronice-lcd-uri/2894-lcd-cu-interfata-i2c-si-backlight-albastru.html?search_query=0104110000003584&results=1|LCD 16x02 cu interfata I2C]] | ~16 lei |
+| [[https://ardushop.ro/ro/electronica/2124-modul-lcd-spi-128x160-6427854032546.html|Modul LCD SPI 160x128]] | ~44 lei |
+| 16x [[https://www.optimusdigital.ro/ro/optoelectronice-led-uri/697-led-verde-de-3-mm-cu-lentile-difuze.html?search_query=0104210000006209&results=1|LED Verde 3mm cu Lentile Difuze]] | 0,40 lei fiecare |
+| 16x Rezistente 220 Ω (pt LED-uri) | |
+| [[https://www.optimusdigital.ro/ro/audio-buzzere/12247-buzzer-pasiv-de-33v-sau-3v.html?search_query=buzzer+pasiv&results=14|Buzzer Pasiv]] | 1 leu |
+| 3x [[https://www.optimusdigital.ro/ro/butoane-i-comutatoare/1115-buton-cu-capac-rotund-alb.html?search_query=buton+cu+capac&results=29|Buton cu Capac Rotund]] | 2 lei fiecare |
+| 3x Rezistente (de PULL-UP) de 10 kΩ (pt butoane) |
+| 3x [[https://www.optimusdigital.ro/ro/componente-electronice-condensatoare/7817-condensator-ceramic-47-nf-50-v.html?search_query=47nF&results=2|Condensatoare ceramice de 47nF]] (pt butoane) | 0,50 lei fiecare |
+| 3x [[https://ardushop.ro/ro/electronica/2297-breadboard-830-puncte-mb-102-6427854012265.html|Breadboard 830 puncte]] | 20 lei fiecare |
+| [[https://www.optimusdigital.ro/ro/kituri/12264-set-de-fire-cu-izolaie-pvc-22awg-6-culori-10m-fiecare-0721248989765.html?search_query=0104110000073266&results=1|Set fire Plusivo cu izolatie PVC (Fir unifilar) - 22 AWG]] | 45 lei |
+| Jumpere tata-tata | |
+| Jumpere mama-tata | |
 
-==== Pin configurations ====
 
-===== Arduino =====
-
-
-
+<note tip>
+Set fire PVC:
+  * Size matters: cele de **22 AWG** se conecteaza cel mai bine in breadboard
+  * Calalalt tip de fire (silicon - multifilar): sunt bune de lipit, dar in niciun caz nu se pot infige intr-un breadboard
+</note>
 
 
 ==== Schema electrica ====
 
 
 {{:pm:prj2025:ajipa:rj45-schematics.jpg?800}}
+
+
+
+
+====  Pin configurations ==== 
+
+===  Arduino ===
+
+{{:pm:prj2025:ajipa:Arduino-Nano.png}}
+
+^ Pin Arduino ^ Corespondent ^
+| D2 | Butonul albastru (BTN1) |
+| D3 | Butonul rosu (BTN2) |
+| D4 | Butonul alb (BTN3) |
+| D5 | Buzzer pasiv |
+| D6 | Data OUT 74HC595 (SER) |
+| D7 | Latch 74HC595 (RCLK) |
+| D8 | Clock 74HC595 (SRCLK) |
+| D9 | RS-Display |
+| D10 | CS-Diplsay |
+| D11 | (SPI) MOSI |
+| D12 | (SPI) MISO |
+| D13 | (SPI) SCK|
+| D14 (etichetat A0) | Data IN 74HC165 |
+| D15 (etichetat A1) | PL 74HC165 |
+| D16 (etichetat A2) | CLK 74HC165 |
+| A4 | (I2C) SDA |
+| A5 | (I2C) SCL |
+
+
+=== 160x128 Display (pe SPI) ===
+
+{{pm:prj2025:ajipa:spi_128x160_display.jpeg?400}}
+
+
+^ Denumire pin ^ Descriere ^
+| Vcc | Vcc
+| GND | Ground |
+| NC | Not Connected (nu se conecteaza la nimic) |
+| CLK | Clock |
+| SDA | este pinul de **MOSI** (foarte confuz ca au scris SDA in loc de **MOSI**) |
+| RS | Register Select |
+| RST | Reset |
+| CS | Chip Select |
+
+<note tip>
+Pinul RS (Register Select) este cunoscut si sub numele de DC (Data Command).
+
+Acest pin indica daca datele trimise pe SPI sunt:
+  * comenzi (e.g.: seteaza pozitia cursorului)
+  * date (e.g. afiseaza pixeli pe ecran)
+
+Pinul are urmaoare functionalitate:
+  * Daca RS/DC = 0 -> comanda
+  * Daca RS/DC = 1 -> date
+</note>
+
+
+^ Pin Display SPI ^ Corespondent ^
+| Vcc | 5V |
+| GND | GND |
+| NC | nu se conecteaza la nimic |
+| CLK | Arduino D13 (SPI SCK) |
+| SDA | Arduino D11 (SPI MOSI) |
+| RS | Arduino D9 |
+| RST | Arduino RESET |
+| CS | Arduino D10 |
+
+
+
+=== 74HC595 shift register ===
+
+<note tip>
+Shift register-ul **74HC595** are o singura intrare si **8 iesiri paralele**.
+</note>
+
+{{:pm:prj2025:ajipa:SN74HC595N.png}}
+
+
+^ Index pin 74HC595 ^ Denumire pin 74HC595 ^ Corespondent ^
+| 15 | Q<sub>A</sub> | LED 1 (cel mai de sus) & pin 1 socket RJ-45 sender |
+| 1  | Q<sub>B</sub> | LED 2 (al doilea cel mai de sus) & pin 2 socket RJ-45 sender |
+| 2  | Q<sub>C</sub> | LED 3 & pin 3 socket RJ-45 sender |
+| 3  | Q<sub>D</sub> | LED 4 & pin 4 socket RJ-45 sender |
+| 4  | Q<sub>E</sub> | LED 5 & pin 5 socket RJ-45 sender |
+| 5  | Q<sub>F</sub> | LED 6 & pin 6 socket RJ-45 sender |
+| 6  | Q<sub>G</sub> | LED 7 & pin 7 socket RJ-45 sender |
+| 7  | Q<sub>H</sub> | LED 8 & pin 8 socket RJ-45 sender |
+| 8  | GND | GND |
+| 9  | !Q<sub>H</sub> | nu este conectat |
+| 10 | !SRCLR | 5V |
+| 11 | SRCLK | Arduino D8 |
+| 12 | RCLK | Arduino D7 |
+| 13 | !OE | GND |
+| 14 | SER | Arduino D6 |
+| 16 | Vcc | 5V |
+
+<note tip>
+LED-ul la care fac referire aici sunt cele din **partea stanga**, asociata **sender**-ului.
+</note>
+
+
+=== 74HC165 shift register ===
+
+
+<note tip>
+Shift register-ul **74HC165** are o singura iesire si **8 intrari paralele**.
+</note>
+
+
+{{:pm:prj2025:ajipa:74HC165.png}}
+
+
+^ Index pin 74HC165 ^ Denumire pin 74HC165 ^ Corespondent ^
+| 7 | !Q<sub>H</sub> | nu este conectat |
+| 9 | Q<sub>H</sub> | Arduino D14 (etichetat A0) |
+| 1 | SH/!LD | Arduino D15 (etichetat A1) |
+| 2 | CLK | Arduino D16 (etichetat A2) |
+| 8 | GND | GND |
+| 16 | Vcc | 5V |
+| 10 | SER | GND |
+| 15 | CLK INH | GND |
+| 11 | A (out1) | LED 1 (cel mai de sus) & pin 1 socket RJ-45 receiver |
+| 12 | B (out1) | LED 2 (al doilea cel mai de sus) & pin 2 socket RJ-45 receiver |
+| 13 | C (out1) | LED 3 & pin 2 socket RJ-45 receiver |
+| 14 | D (out1) | LED 4 & pin 3 socket RJ-45 receiver |
+| 3 | E (out1) | LED 5 & pin 4 socket RJ-45 receiver |
+| 4 | F (out1) | LED 6 & pin 5 socket RJ-45 receiver |
+| 5 | G (out1) | LED 7 & pin 6 socket RJ-45 receiver |
+| 6 | H (out1) | LED 8 & pin 7 socket RJ-45 receiver |
+
+
+
+<note tip>
+LED-ul la care fac referire aici sunt cele din **partea dreapta**, asociata **receiver**-ului.
+</note>
+
 
 
 ==== Debounce butoane: Filtru trece-jos ====
@@ -164,8 +306,7 @@ Descrierile functiilor:
   * **void force_stop_handler()**:
     * Functia este apelata in urma apasarii butonului **rosu**.
     * Opreste fortat algoritmul de testare,
-    * dar nu inainte de a afisa pe ecranul LCD pe I2C un mesaj sugestiv in acest sens
-    * **lcd.print("Force stop!");**
+    * dar nu inainte de a afisa pe ecranul LCD pe I2C un mesaj sugestiv in acest sens: **lcd.print("Force stop!");**
   * **void write_to_sender_socket()**:
     * Variabila **bool pinsSenderSocket[8]** retine starea pinilor din mufa RJ-45 de transmisie
     * Functia scrie valorile din **bool pinsSenderSocket[8]** in shift register-ul **74HC595**,
@@ -231,6 +372,6 @@ YouTube: https://www.youtube.com/shorts/l0MMbmgLmWM
 
   * Dat fiind faptul ca nu am avut succes la afisarea pe ecranul 160x128 a unor imagini **.bmp** luate de pe un card microSD, a trebuit sa renunt complet la modulul microSD
   * In alta ordine de idei, pentru a desena modul de cablare, am mers pe o idee mai programatica, **EGC**-style: m-am apucat si am desenat eu dreptunghiuri pe ecran, colorandu-ule corespunzator. Rezultatul final cred ca este mult mai bun decat daca as fi transformat niste screen-shoot-uri la imagini **.bmp** de rezolutie joasa
-  * Cateva probleme pe care le-am intampinat in timpul acestui proiect au fost create de shift register-ul **74HC595** (cel cu 8 iesiri paralele):
+  * Cateva probleme pe care le-am intampinat in timpul acestui proiect au fost create de **shift register**-ul **74HC595** (cel cu 8 iesiri paralele):
     - Are o stare initiala random (am rezolvat scriind 0 logic pe toate iesirile)
-    - Exista un delay (am observat ca este undeva la 200-300 ms) din momentul in care dau o valoare inspre shift register si momentul in care semnalul iese corect din acesta 
+    - Exista un **delay** (am observat ca este undeva la **200-300 ms**) din momentul in care dau o valoare inspre shift register si momentul in care semnalul iese corect din acesta 

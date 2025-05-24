@@ -97,14 +97,17 @@ Schema bloc:
 | 3x Rezistente (de PULL-UP) de 10 kΩ (pt butoane) |
 | 3x [Condensatoare ceramice de 47nF](https://www.optimusdigital.ro/ro/componente-electronice-condensatoare/7817-condensator-ceramic-47-nf-50-v.html?search_query=47nF&results=2) (pt butoane) | 0,50 lei fiecare |
 | 3x [Breadboard 830 puncte](https://ardushop.ro/ro/electronica/2297-breadboard-830-puncte-mb-102-6427854012265.html) | 20 lei fiecare |
-| [Set fire PVC (Fir unifilar) - 22 AWG](https://www.optimusdigital.ro/ro/kituri/12264-set-de-fire-cu-izolaie-pvc-22awg-6-culori-10m-fiecare-0721248989765.html?search_query=0104110000073266&results=1) | 45 lei |
+| [Set fire Plusivo cu izolatie PVC (Fir unifilar) - 22 AWG](https://www.optimusdigital.ro/ro/kituri/12264-set-de-fire-cu-izolaie-pvc-22awg-6-culori-10m-fiecare-0721248989765.html?search_query=0104110000073266&results=1) | 45 lei |
 | Jumpere tata-tata | |
 | Jumpere mama-tata | |
 
 
+> Set fire PVC:
+>   - Size matters: cele de **22 AWG** se conecteaza cel mai bine in breadboard
+>   - Calalalt tip de fire (silicon - multifilar): sunt bune de lipit, dar in niciun caz nu se pot infige intr-un breadboard
 
-Componente auxiliare, specifice tester-ului RJ-45:
 
+**Componente auxiliare**, specifice tester-ului RJ-45:
 | Componenta | Pret |
 | :--- | :--- |
 | 2 metri cablue UTP | 0 lei (de la CCNA 😊)  |
@@ -144,7 +147,7 @@ Componente auxiliare, specifice tester-ului RJ-45:
 | D15 (etichetat A1) | PL 74HC165 |
 | D16 (etichetat A2) | CLK 74HC165 |
 | A4 | (I2C) SDA |
-| A5 | (I2C) SDA |
+| A5 | (I2C) SCL |
 
 
 #### 160x128 Display (pe SPI)
@@ -208,11 +211,11 @@ Componente auxiliare, specifice tester-ului RJ-45:
 | 10 | !SRCLR | 5V |
 | 11 | SRCLK | Arduino D8 |
 | 12 | RCLK | Arduino D7 |
-| 13 | !OE | GND
+| 13 | !OE | GND |
 | 14 | SER | Arduino D6 |
 | 16 | Vcc | 5V |
 
-> LED-ul la care fac referire aici sunt cele din partea stanga, asociata **sender**-ului.
+> LED-ul la care fac referire aici sunt cele din **partea stanga**, asociate **sender**-ului.
 
 
 
@@ -240,6 +243,10 @@ Componente auxiliare, specifice tester-ului RJ-45:
 | 4 | F (out1) | LED 6 & pin 5 socket RJ-45 receiver |
 | 5 | G (out1) | LED 7 & pin 6 socket RJ-45 receiver |
 | 6 | H (out1) | LED 8 & pin 7 socket RJ-45 receiver |
+
+
+> LED-ul la care fac referire aici sunt cele din **partea dreapta**, asociate **receiver**-ului.
+
 
 
 ### Debounce butoane: Filtru trece-jos
@@ -384,9 +391,9 @@ tft.fillRect(x_upper_left_corner, y_upper_left_corner, width, height, ST77XX_<co
 - In alta ordine de idei, pentru a desena modul de cablare, am mers pe o idee mai programatica,
   **EGC**-style: m-am apucat si am desenat eu dreptunghiuri pe ecran, colorandu-ule corespunzator.
   Rezultatul final cred ca este mult mai bun decat daca as fi transformat niste screen-shoot-uri la imagini **.bmp** de rezolutie joasa
-- Cateva probleme pe care le-am intampinat in timpul acestui proiect au fost create de shift register-ul **74HC595** (cel cu 8 iesiri paralele):
+- Cateva probleme pe care le-am intampinat in timpul acestui proiect au fost create de **shift register**-ul **74HC595** (cel cu 8 iesiri paralele):
   - Are o stare initiala random (am rezolvat scriind 0 logic pe toate iesirile)
-  - Exista un delay (am observat ca este undeva la 200-300 ms) din momentul in care dau o valoare inspre shift register si momentul in care semnalul iese corect din acesta 
+  - Exista un **delay** (am observat ca este undeva la **200-300 ms**) din momentul in care dau o valoare inspre shift register si momentul in care semnalul iese corect din acesta 
 
 
 ## Resurse folosite
