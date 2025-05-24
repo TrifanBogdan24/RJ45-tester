@@ -5,8 +5,8 @@
 // Rezolutie: 160x128
 
 // Pini pentru display-ul 160x128
+#define TFT_DC     9
 #define TFT_CS    10
-#define TFT_DC    A3
 #define TFT_RST   -1
 
 
@@ -341,3 +341,4 @@ void draw_rollover_wiring()
     tft_lcd.fillRect(X_OFFSET + 2 * BOX_WIDTH + WIRE_WIDTH, Y_OFFSET + 7 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, ST77XX_WHITE);
     tft_lcd.fillRect(X_OFFSET + 3 * BOX_WIDTH + WIRE_WIDTH, Y_OFFSET + 7 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, ST77XX_ORANGE);
 }
+

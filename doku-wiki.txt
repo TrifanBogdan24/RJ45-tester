@@ -69,15 +69,20 @@ Schema bloc:
     * 1x [[https://ardushop.ro/ro/electronica/683-74hc165-8-bit-shift-register-6427854008602.html|74HC165 8-bit Shift Register]] (8 pini de intrare)
     * [[https://www.optimusdigital.ro/ro/optoelectronice-lcd-uri/2894-lcd-cu-interfata-i2c-si-backlight-albastru.html?search_query=0104110000003584&results=1|LCD 16x02 cu interfata I2C]]
     * [[https://ardushop.ro/ro/electronica/2124-modul-lcd-spi-128x160-6427854032546.html|Modul LCD SPI 128x160]]
-    * [[https://ardushop.ro/ro/module/1553-groundstudio-microsd-module-6427854023056.html|microSD module]]
-    * [[https://www.optimusdigital.ro/ro/memorii/8678-card-microsd-original-de-16-gb-cu-noobs-compatibil-cu-raspberry-pi-4-model-b-varianta-bulk.html|Card MicroSD 16 GB]]
-        * Nu am găsit un card mai mic 🙁
     * 16x [[https://www.optimusdigital.ro/ro/optoelectronice-led-uri/697-led-verde-de-3-mm-cu-lentile-difuze.html?search_query=0104210000006209&results=1|LED Verde cu lentile difuze]]
     * [[https://www.optimusdigital.ro/ro/componente-electronice/12598-modul-buzzer-pasiv.html?search_query=0104110000082985&results=1|Modul Buzzer Pasiv]]
     * 3x [[https://www.optimusdigital.ro/ro/butoane-i-comutatoare/1115-buton-cu-capac-rotund-alb.html?search_query=buton+cu+capac&results=29|Buton cu Capac Rotund]]
     * 3x Rezistente (de PULL-UP) de 10 kΩ (pt butoane)
     * 3x Condensatoare ceramice de 47nF (pt butoane)
     * 3 breadboard-uri 830 puncte
+
+
+
+==== Pin configurations ====
+
+===== Arduino =====
+
+
 
 
 
@@ -126,8 +131,7 @@ Chiar si asa, eu tot am lasat in cod un mic **delay**
 Biblioteci folosite:
   * **Arduino.h**: biblioteca default pentru placa de dezvoltare
   * **LiquidCrystal_I2C.h**: imi permite scrierea caracterelor pe ecranul secundar (cel pe I2C, de rezolutie 16x02)
-  * **SD.h**: permite comunicarea cu modulul de card microSD si interactiunea cu sistemul de fisiere de pe card
-  * **Adafruit_GFX.h**, **Adafruit_ST7735.h**, **Adafruit_ImageReader.h**: pentru interactiunea cu display-ul principal (cel pe SPI, de rezolutie 128x160)
+  * **Adafruit_GFX.h**, **Adafruit_ST7735.h**: pentru interactiunea cu display-ul principal (cel pe SPI, de rezolutie 128x160)
 
 Repo GitHub: <https://github.com/TrifanBogdan24/RJ45-tester> - codul sursa se gaseste in folderul **src/**.
 
@@ -184,9 +188,13 @@ Descrierile functiilor:
       * Scrie "1 logic" in iesirea (shift register-ului) **74HC595** corespunzatoare pinului ales: lucru care va produce aprinderea unui LED
       * Ruleaza un mic **delay()** pentru a ma asigura ca semnalul are timp sa ajunga de la un capat la altul
       * Apeleaza functia **is_correct_wiring** pentru a afla daca semnalul ajuns unde trebuie:
-        * Daca da, va scrie in *"OK"* in coltul dreapta-jos al display-ului secundar si va emite un bapait scurt
-        * Altfel, va scrie *"NOK"* pe LCD si va produce un sunet de avertistment
+        * Daca da, va scrie in //"OK"// in coltul dreapta-jos al display-ului secundar si va emite un bapait scurt
+        * Altfel, va scrie //"NOK"// pe LCD si va produce un sunet de avertistment
     * Functia verifica constant daca butonul **rosu** a fost apasat (flag-ul **pressedBTN2** a fost setat), caz in care opreste fortat algorimul de testare, apeland **force_stop_handler()** in cod
+  * **void draw_straight_through_wiring()**, **void draw_crossover_wiring()**, **void draw_rollover_wiring()**:
+    * Aceste functii afiseaza grafic ordinea firelor pentru cele doua capete ale unui cablu de retea
+    * In functie de tipul de cablare selectat (straight-through/crossover/rollover)
+    * Ordinea firelor este redata conform standardelor prezentate in **cursul de RL**
   * **setup()**
     * configureza pinii de Input/Outpt
     * activeaza intreruperile
@@ -196,6 +204,7 @@ Descrierile functiilor:
     * Verifica si trateaza flag-urile **pressedBTN1** si **pressedBTN3**
     * Reseteaza flag-urile
     * Ruleaza **delay()**
+
 <note tip>NOTA: flag-ul **pressedBTN2** este tratat in interiorul algoritmului de testare (in functia **test_individual_rj45_pins()**)</note>
 
 
@@ -207,4 +216,21 @@ Descrierile functiilor:
 {{:pm:prj2025:ajipa:rj45-sw-code-img-05.png?400}}
 {{:pm:prj2025:ajipa:rj45-sw-code-img-06.png?500}}
 {{:pm:prj2025:ajipa:rj45-sw-code-img-07.png?400}}
+{{:pm:prj2025:ajipa:rj45-sw-code-img-08.png?800}}
+{{:pm:prj2025:ajipa:rj45-sw-code-img-09.png?800}}
+{{:pm:prj2025:ajipa:rj45-sw-code-img-10.png?900}}
 
+
+
+Repo GitHub: https://github.com/TrifanBogdan24/RJ45-tester
+
+YouTube: https://www.youtube.com/shorts/l0MMbmgLmWM
+
+
+===== Concluzii =====
+
+  * Dat fiind faptul ca nu am avut succes la afisarea pe ecranul 160x128 a unor imagini **.bmp** luate de pe un card microSD, a trebuit sa renunt complet la modulul microSD
+  * In alta ordine de idei, pentru a desena modul de cablare, am mers pe o idee mai programatica, **EGC**-style: m-am apucat si am desenat eu dreptunghiuri pe ecran, colorandu-ule corespunzator. Rezultatul final cred ca este mult mai bun decat daca as fi transformat niste screen-shoot-uri la imagini **.bmp** de rezolutie joasa
+  * Cateva probleme pe care le-am intampinat in timpul acestui proiect au fost create de shift register-ul **74HC595** (cel cu 8 iesiri paralele):
+    - Are o stare initiala random (am rezolvat scriind 0 logic pe toate iesirile)
+    - Exista un delay (am observat ca este undeva la 200-300 ms) din momentul in care dau o valoare inspre shift register si momentul in care semnalul iese corect din acesta 

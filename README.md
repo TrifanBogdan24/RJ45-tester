@@ -104,6 +104,128 @@ Schema bloc:
 ![img](images/rj45-schematics.jpg)
 
 
+### Pin configurations
+
+#### Arduino
+
+![img](./hw/pinouts/Arduino-Nano.png)
+
+| Pin Arduino | Corespondent |
+| :--- | :--- |
+| D2 | Butonul albastru (BTN1) |
+| D3 | Butonul rosu (BTN2) |
+| D4 | Butonul alb (BTN3) |
+| D5 | Buzzer pasiv |
+| D6 | Data OUT 74HC595 (SER) |
+| D7 | Latch 74HC595 (RCLK) |
+| D8 | Clock 74HC595 (SRCLK) |
+| D9 | RS-Display |
+| D10 | CS-Diplsay |
+| D11 | (SPI) MOSI |
+| D12 | (SPI) MISO |
+| D13 | (SPI) SCK|
+| D14 (etichetat A0) | Data IN 74HC165 |
+| D15 (etichetat A1) | PL 74HC165 |
+| D16 (etichetat A2) | CLK 74HC165 |
+| A4 | (I2C) SDA |
+| A5 | (I2C) SDA |
+
+
+#### 160x128 Display (pe SPI)
+
+![img](./hw/pinouts/SPI%20128x160%20display.jpeg)
+
+
+| Denumire pin | Descriere |
+| :--- | :--- |
+| Vcc | Vcc
+| GND | Ground |
+| NC | Not Connected (nu se conecteaza la nimic) |
+| CLK | Clock |
+| SDA | este pinul de **MOSI** (foarte confuz ca au scris SDA in loc de **MOSI**) |
+| RS | Register Select |
+| RST | Reset |
+| CS | Chip Select |
+
+> Pinul RS (Register Select) este cunoscut si sub numele de DC (Data Command).
+> 
+> Acest pin indica daca datele trimise pe SPI sunt:
+> - comenzi (e.g.: seteaza pozitia cursorului)
+> - date (e.g. afiseaza pixeli pe ecran)
+> 
+> Pinul are urmaoare functionalitate:
+> - Daca RS/DC = 0 -> comanda
+> - Daca RS/DC = 1 -> date
+
+| Pin Display SPI | Corespondent |
+| :--- | :--- |
+| Vcc | 5V |
+| GND | GND |
+| NC | nu se conecteaza la nimic |
+| CLK | Arduino D13 (SPI SCK) |
+| SDA | Arduino D11 (SPI MOSI) |
+| RS | Arduino D9 |
+| RST | Arduino RESET |
+| CS | Arduino D10 |
+
+
+
+#### 74HC595 shift register
+
+> Shift register-ul **74HC595** are o singura intrare si **8 iesiri paralele**.
+
+![img](./hw/pinouts/SN74HC595N.png)
+
+
+| Index pin 74HC595 | Denumire pin 74HC595 | Corespondent |
+| :--- | :--- | :--- |
+| 15 | Q<sub>A</sub> | LED 1 (cel mai de sus) & pin 1 socket RJ-45 sender |
+| 1  | Q<sub>B</sub> | LED 2 (al doilea cel mai de sus) & pin 2 socket RJ-45 sender |
+| 2  | Q<sub>C</sub> | LED 3 & pin 3 socket RJ-45 sender |
+| 3  | Q<sub>D</sub> | LED 4 & pin 4 socket RJ-45 sender |
+| 4  | Q<sub>E</sub> | LED 5 & pin 5 socket RJ-45 sender |
+| 5  | Q<sub>F</sub> | LED 6 & pin 6 socket RJ-45 sender |
+| 6  | Q<sub>G</sub> | LED 7 & pin 7 socket RJ-45 sender |
+| 7  | Q<sub>H</sub> | LED 8 & pin 8 socket RJ-45 sender |
+| 8  | GND | GND |
+| 9  | !Q<sub>H</sub> | nmk |
+| 10 | !SRCLR | 5V |
+| 11 | SRCLK | Arduino D8 |
+| 12 | RCLK | Arduino D7 |
+| 13 | !OE | GND
+| 14 | SER | Arduino D6 |
+| 16 | Vcc | 5V |
+
+> LED-ul la care fac referire aici sunt cele din partea stanga, asociata **sender**-ului.
+
+
+
+#### 74HC165 shift register
+
+> Shift register-ul **74HC165** are o singura iesire si **8 intrari paralele**.
+
+![img](./hw/pinouts/74HC165.png)
+
+| Index pin 74HC165 | Denumire pin 74HC165 | Corespondent |
+| :--- | :--- | :--- |
+| 7 | !Q<sub>H</sub> | nmk |
+| 9 | Q<sub>H</sub> | Arduino D14 (etichetat A0) |
+| 1 | SH/!LD | Arduino D15 (etichetat A1) |
+| 2 | CLK | Arduino D16 (etichetat A2) |
+| 8 | GND | GND |
+| 16 | Vcc | 5V |
+| 10 | SER | GND |
+| 15 | CLK INH | GND |
+| 11 | A (out1) | LED 1 (cel mai de sus) & pin 1 socket RJ-45 receiver |
+| 12 | B (out1) | LED 2 (al doilea cel mai de sus) & pin 2 socket RJ-45 receiver |
+| 13 | C (out1) | LED 3 & pin 2 socket RJ-45 receiver |
+| 14 | D (out1) | LED 4 & pin 3 socket RJ-45 receiver |
+| 3 | E (out1) | LED 5 & pin 4 socket RJ-45 receiver |
+| 4 | F (out1) | LED 6 & pin 5 socket RJ-45 receiver |
+| 5 | G (out1) | LED 7 & pin 6 socket RJ-45 receiver |
+| 6 | H (out1) | LED 8 & pin 7 socket RJ-45 receiver |
+
+
 ### Debounce butoane: Filtru trece-jos
 
 Pentru a trata **debounce-ul butoanelor** exclusiv din hardware,
@@ -206,6 +328,11 @@ Descrierile functiilor:
       - Altfe, va scrie *"NOK"* pe LCD si va produce un sunet de avertistment
   - Functia verifica constant daca butonul **rosu** a fost apasat (flag-ul `pressedBTN2` a fost setat),
     caz in care opreste fortat algorimul de testare, apeland `force_stop_handler()` in cod
+- `void init_tft_lcd()`: initializeaza display-ul principal (cel pe SPI, de rezolutie 160x128)
+- `void draw_straight_through_wiring()`/`void draw_crossover_wiring()`/`void draw_rollover_wiring()`:
+  - Aceste functii afiseaza grafic ordinea firelor pentru cele doua capete ale unui cablu de retea
+  - In functie de tipul de cablare selectat (straight-through/crossover/rollover)
+  - Ordinea firelor este redata conform standardelor prezentate in **cursul de RL**
 - `setup()`
   - configureza pinii de Input/Outpt
   - activeaza intreruperile
@@ -229,6 +356,21 @@ tft.fillRect(x_upper_left_corner, y_upper_left_corner, width, height, ST77XX_<co
 ![img](./images/rj45-sw-code-img-05.png)
 ![img](./images/rj45-sw-code-img-06.png)
 ![img](./images/rj45-sw-code-img-07.png)
+![img](./images/rj45-sw-code-img-08.png)
+![img](./images/rj45-sw-code-img-09.png)
+![img](./images/rj45-sw-code-img-10.png)
+
+
+## Concluzii
+
+- Dat fiind faptul ca nu am avut succes la afisarea pe ecranul 160x128 a unor imagini **.bmp** luate de pe un card microSD,
+  a trebuit sa renunt complet la modulul microSD
+- In alta ordine de idei, pentru a desena modul de cablare, am mers pe o idee mai programatica,
+  **EGC**-style: m-am apucat si am desenat eu dreptunghiuri pe ecran, colorandu-ule corespunzator.
+  Rezultatul final cred ca este mult mai bun decat daca as fi transformat niste screen-shoot-uri la imagini **.bmp** de rezolutie joasa
+- Cateva probleme pe care le-am intampinat in timpul acestui proiect au fost create de shift register-ul **74HC595** (cel cu 8 iesiri paralele):
+  - Are o stare initiala random (am rezolvat scriind 0 logic pe toate iesirile)
+  - Exista un delay (am observat ca este undeva la 200-300 ms) din momentul in care dau o valoare inspre shift register si momentul in care semnalul iese corect din acesta 
 
 
 ## Resurse folosite
@@ -238,14 +380,6 @@ Pt cablurile pe care le folosesc pe breadboard: <https://www.youtube.com/shorts/
 
 [#13 How To Create Custom Symbols in KiCad 7.0 With KLC](https://www.youtube.com/watch?v=baCGoK8MuH0)
 
-<https://www.narakeet.com/> transforma un text intr-un speech (*.txt -> *.mp3).
-<https://audio.online-convert.com/convert-to-wav> transforma *.mp3 -> *.wav
-
-
-Specificatii folosite la generarea fisierului **\*.wav**:
-- Bit resolution: 8-Bit
-- Audio frequency: 16 kHz
-- Audio channels: Mono
 
 Data-sheets:
 - [Arduino NANO pinout](https://docs.arduino.cc/resources/pinouts/A000005-full-pinout.pdf)

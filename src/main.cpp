@@ -28,7 +28,6 @@ volatile bool pressedBTN2 = false;   // Red button (force stop)
 volatile bool pressedBTN3 = false;   // White button (start tester)
 
 bool isRunningTest = false;
-bool isRunningAudioInstruction = false;
 
 // Pentru intreruperile pe PCINT
 volatile uint8_t lastPortD = 0;
@@ -46,7 +45,7 @@ bool pinsSenderSocket[8];
 
 // Intrerupere pe pinul D2 (BTN1)
 ISR(INT0_vect) {
-    if (isRunningTest || isRunningAudioInstruction) return;
+    if (isRunningTest) return;
     pressedBTN1 = true;
 }
 
@@ -59,7 +58,7 @@ ISR(INT1_vect) {
 
 
 ISR(PCINT2_vect) {
-    if (isRunningTest || isRunningAudioInstruction) return;
+    if (isRunningTest) return;
 
     uint8_t current = PIND;
     uint8_t changed = current ^ lastPortD;
@@ -410,11 +409,7 @@ void test_individual_rj45_pins()
 
 
 void loop() {
-
-    if (pressedBTN1 && !pressedBTN2 && pressedBTN3) {
-        // Butoanele alb si albastru au fost apasate simultan: porneste instructiunile audio
-        // TODO: add logic
-    } else if (pressedBTN1 && !pressedBTN2 && !pressedBTN3) {
+    if (pressedBTN1 && !pressedBTN2 && !pressedBTN3) {
         // Butonul albastru a fost apasat: schimba tipul de cablare
         cableType = (cableType + 1) % 3;
         write_full_cable_mode_on_i2c_lcd();
