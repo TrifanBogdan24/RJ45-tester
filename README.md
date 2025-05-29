@@ -23,6 +23,7 @@ oferind feedback vizual și auditiv privind corectitudinea conexiunilor dintre p
 Prin simpla apăsare a unui buton, utilizatorul poate selecta tipul de cablu testat:
 1. **Straight-through** - pentru conectarea dispozitivelor aflate pe *layere diferite* (ex: PC – switch)
 2. **Crossover** - pentru conectarea dispozitivelor de *același layer* (ex: PC - PC)
+3. **Rollover** (numit si *cablu de consola*) - pentru a conecta un dispozitiv la un echipament de retea si pentru a avea acces direct la CLI
 
 După selectare, pe ecranul principal (128x160 SPI) este afișată o imagine cu ordinea corectă a firelor pentru tipul respectiv de cablu.
 

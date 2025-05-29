@@ -22,6 +22,7 @@ LiquidCrystal_I2C i2c_lcd(0x27, 16, 2);
 
 // 0 = Straight-through ; 1 = Crossover ; 2 = Rollover
 int cableType = CABLE_TYPE_STRAIGHT_THROUGH;
+int imageTypeOnDisplay = 0;
 
 volatile bool pressedBTN1 = false;   // Blue button (switch cable type)
 volatile bool pressedBTN2 = false;   // Red button (force stop)
@@ -201,6 +202,7 @@ void setup() {
 
 
     cableType = CABLE_TYPE_STRAIGHT_THROUGH;
+    imageTypeOnDisplay = 0;
 
     i2c_lcd.begin(16, 2);
     i2c_lcd.backlight();
@@ -409,11 +411,18 @@ void test_individual_rj45_pins()
 void loop() {
     if (pressedBTN1 && !pressedBTN2 && !pressedBTN3) {
         // Butonul albastru a fost apasat: schimba tipul de cablare
+
+        imageTypeOnDisplay = (imageTypeOnDisplay + 1) % 6;
         cableType = (cableType + 1) % 3;
         write_full_cable_mode_on_i2c_lcd();
-        if (cableType == CABLE_TYPE_STRAIGHT_THROUGH) draw_straight_through_wiring();
-        else if (cableType == CABLE_TYPE_CROSSOVER) draw_crossover_wiring();
-        else if (cableType == CABLE_TYPE_ROLLOVER) draw_rollover_wiring();
+
+
+        if (imageTypeOnDisplay == 0) draw_straight_through_wiring();
+        else if (imageTypeOnDisplay == 1) draw_crossover_wiring();
+        else if (imageTypeOnDisplay == 2) draw_rollover_wiring();
+        else if (imageTypeOnDisplay == 3)  draw_straight_through_rj45_socket();
+        else if (imageTypeOnDisplay == 4)  draw_crossover_rj45_socket();
+        else if (imageTypeOnDisplay == 5)  draw_rollover_rj45_socket();
     } else if (pressedBTN3 && !pressedBTN1 && !pressedBTN2) {
         // Butonul alb a fost apast: porneste tester-ul
         isRunningTest = true;

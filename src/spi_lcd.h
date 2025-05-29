@@ -13,7 +13,7 @@
 Adafruit_ST7735 tft_lcd = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 #define COLOR_BROWN   tft_lcd.color565(112, 55, 14)
-
+#define COLOR_GREY    tft_lcd.color565(137, 128, 156)
 
 
 void init_tft_lcd()
@@ -342,3 +342,288 @@ void draw_rollover_wiring()
     tft_lcd.fillRect(X_OFFSET + 3 * BOX_WIDTH + WIRE_WIDTH, Y_OFFSET + 7 * (BOX_HEIGHT + Y_OFFSET_BTWN_BOXES), BOX_WIDTH, BOX_HEIGHT, ST77XX_ORANGE);
 }
 
+
+
+
+void draw_straight_through_rj45_socket()
+{
+    tft_lcd.fillScreen(ST77XX_BLACK);   // Clear screen
+
+    const int WIDTH_UPPER_RECT = 70;
+    const int HEIGHT_UPPER_RECT = 25;
+
+    const int WIDTH_LOWER_RECT = 50;
+    const int HEIGHT_LOWER_RECT = 20;
+
+    const int WIDTH_SEP_LINE = 2;
+
+
+
+    const int X_OFFSET_UPPER_RECT_OF_LEFT_SOCKET = (tft_lcd.width()/2 - WIDTH_SEP_LINE / 2 - WIDTH_UPPER_RECT) / 2;
+    const int Y_OFFSET_UPPER_RECT = (tft_lcd.height() - HEIGHT_UPPER_RECT - HEIGHT_LOWER_RECT) / 2;
+
+    const int X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET = X_OFFSET_UPPER_RECT_OF_LEFT_SOCKET + (WIDTH_UPPER_RECT - WIDTH_LOWER_RECT) / 2;
+    const int Y_OFFSET_LOWER_RECT = Y_OFFSET_UPPER_RECT + HEIGHT_UPPER_RECT;
+
+
+    // Draw left socket
+    tft_lcd.fillRect(X_OFFSET_UPPER_RECT_OF_LEFT_SOCKET, Y_OFFSET_UPPER_RECT, WIDTH_UPPER_RECT, HEIGHT_UPPER_RECT, COLOR_GREY);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET, Y_OFFSET_LOWER_RECT, WIDTH_LOWER_RECT, HEIGHT_LOWER_RECT, COLOR_GREY);
+
+
+    const int X_OFFSET_UPPER_RECT_OF_RIGHT_SOCKET = tft_lcd.width()/2 + WIDTH_SEP_LINE/2 + X_OFFSET_UPPER_RECT_OF_LEFT_SOCKET;
+    const int X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET = X_OFFSET_UPPER_RECT_OF_RIGHT_SOCKET + (WIDTH_UPPER_RECT - WIDTH_LOWER_RECT) / 2;
+
+    // Draw right socket
+    tft_lcd.fillRect(X_OFFSET_UPPER_RECT_OF_RIGHT_SOCKET, Y_OFFSET_UPPER_RECT, WIDTH_UPPER_RECT, HEIGHT_UPPER_RECT, COLOR_GREY);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET, Y_OFFSET_LOWER_RECT, WIDTH_LOWER_RECT, HEIGHT_LOWER_RECT, COLOR_GREY);
+
+
+
+
+    tft_lcd.fillRect((tft_lcd.width() - WIDTH_SEP_LINE) / 2, 0, WIDTH_SEP_LINE, tft_lcd.height(), ST7735_WHITE);  // Split screen
+
+    // Draw sender pins:
+
+    // Draw pin 1 sender: white-orange
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_ORANGE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_ORANGE);
+    // Draw pin 2 sender: orange
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 1 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_ORANGE);
+    // Draw pin 3 sender: white-green
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_GREEN);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_GREEN);
+    // Draw pin 4 sender: blue
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 3 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_BLUE);
+    // Draw pin 5 sender: white-blue
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_BLUE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_BLUE);
+    // Draw pin 6 sender: green
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 5 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_GREEN);
+    // Draw pin 7 sender: white-brown
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, COLOR_BROWN);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, COLOR_BROWN);
+    // Draw pin 8 sender: brown
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 7 * 6, Y_OFFSET_UPPER_RECT, 4, 30, COLOR_BROWN);
+
+
+
+    // Draw receinver pins:
+    // Draw pin 1 receiver: white-orange
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_ORANGE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_ORANGE);
+    // Draw pin 2 receiver: orange
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 1 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_ORANGE);
+    // Draw pin 3 receiver: white-green
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_GREEN);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_GREEN);
+    // Draw pin 4 receiver: blue
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 3 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_BLUE);
+    // Draw pin 5 receiver: white-blue
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_BLUE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_BLUE);
+    // Draw pin 6 receiver: green
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 5 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_GREEN);
+    // Draw pin 7 receiver: white-brown
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, COLOR_BROWN);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, COLOR_BROWN);
+    // Draw pin 8 receiver: brown
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 7 * 6, Y_OFFSET_UPPER_RECT, 4, 30, COLOR_BROWN);
+}
+
+
+
+void draw_crossover_rj45_socket()
+{
+    tft_lcd.fillScreen(ST77XX_BLACK);   // Clear screen
+
+    const int WIDTH_UPPER_RECT = 70;
+    const int HEIGHT_UPPER_RECT = 25;
+
+    const int WIDTH_LOWER_RECT = 50;
+    const int HEIGHT_LOWER_RECT = 20;
+
+    const int WIDTH_SEP_LINE = 2;
+
+
+
+    const int X_OFFSET_UPPER_RECT_OF_LEFT_SOCKET = (tft_lcd.width()/2 - WIDTH_SEP_LINE / 2 - WIDTH_UPPER_RECT) / 2;
+    const int Y_OFFSET_UPPER_RECT = (tft_lcd.height() - HEIGHT_UPPER_RECT - HEIGHT_LOWER_RECT) / 2;
+
+    const int X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET = X_OFFSET_UPPER_RECT_OF_LEFT_SOCKET + (WIDTH_UPPER_RECT - WIDTH_LOWER_RECT) / 2;
+    const int Y_OFFSET_LOWER_RECT = Y_OFFSET_UPPER_RECT + HEIGHT_UPPER_RECT;
+
+
+    // Draw left socket
+    tft_lcd.fillRect(X_OFFSET_UPPER_RECT_OF_LEFT_SOCKET, Y_OFFSET_UPPER_RECT, WIDTH_UPPER_RECT, HEIGHT_UPPER_RECT, COLOR_GREY);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET, Y_OFFSET_LOWER_RECT, WIDTH_LOWER_RECT, HEIGHT_LOWER_RECT, COLOR_GREY);
+
+
+    const int X_OFFSET_UPPER_RECT_OF_RIGHT_SOCKET = tft_lcd.width()/2 + WIDTH_SEP_LINE/2 + X_OFFSET_UPPER_RECT_OF_LEFT_SOCKET;
+    const int X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET = X_OFFSET_UPPER_RECT_OF_RIGHT_SOCKET + (WIDTH_UPPER_RECT - WIDTH_LOWER_RECT) / 2;
+
+    // Draw right socket
+    tft_lcd.fillRect(X_OFFSET_UPPER_RECT_OF_RIGHT_SOCKET, Y_OFFSET_UPPER_RECT, WIDTH_UPPER_RECT, HEIGHT_UPPER_RECT, COLOR_GREY);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET, Y_OFFSET_LOWER_RECT, WIDTH_LOWER_RECT, HEIGHT_LOWER_RECT, COLOR_GREY);
+
+
+
+
+    tft_lcd.fillRect((tft_lcd.width() - WIDTH_SEP_LINE) / 2, 0, WIDTH_SEP_LINE, tft_lcd.height(), ST7735_WHITE);  // Split screen
+
+    // Draw sender pins:
+    // Draw pin 1 sender: white-orange
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_ORANGE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_ORANGE);
+    // Draw pin 2 sender: orange
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 1 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_ORANGE);
+    // Draw pin 3 sender: white-green
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_GREEN);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_GREEN);
+    // Draw pin 4 sender: blue
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 3 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_BLUE);
+    // Draw pin 5 sender: white-blue
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_BLUE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_BLUE);
+    // Draw pin 6 sender: green
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 5 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_GREEN);
+    // Draw pin 7 sender: white-brown
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, COLOR_BROWN);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, COLOR_BROWN);
+    // Draw pin 8 sender: brown
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 7 * 6, Y_OFFSET_UPPER_RECT, 4, 30, COLOR_BROWN);
+
+
+    // Draw receiver pins:
+    // Draw pin 1 receiver: white-green
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_GREEN);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_GREEN);
+    // Draw pin 2 receiver: green
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 1 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_GREEN);
+    // Draw pin 3 receiver: white-orange
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_ORANGE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_ORANGE);
+    // Draw pin 4 receiver: blue
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 3 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_BLUE);
+    // Draw pin 5 receiver: white-blue
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_BLUE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_BLUE);
+    // Draw pin 6 receiver: orange
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 5 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_ORANGE);
+    // Draw pin 7 receiver: white-brown
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, COLOR_BROWN);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, COLOR_BROWN);
+    // Draw pin 8 receiver: brown
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 7 * 6, Y_OFFSET_UPPER_RECT, 4, 30, COLOR_BROWN);
+}
+
+
+
+
+void draw_rollover_rj45_socket()
+{
+    tft_lcd.fillScreen(ST77XX_BLACK);   // Clear screen
+
+    const int WIDTH_UPPER_RECT = 70;
+    const int HEIGHT_UPPER_RECT = 25;
+
+    const int WIDTH_LOWER_RECT = 50;
+    const int HEIGHT_LOWER_RECT = 20;
+
+    const int WIDTH_SEP_LINE = 2;
+
+
+
+    const int X_OFFSET_UPPER_RECT_OF_LEFT_SOCKET = (tft_lcd.width()/2 - WIDTH_SEP_LINE / 2 - WIDTH_UPPER_RECT) / 2;
+    const int Y_OFFSET_UPPER_RECT = (tft_lcd.height() - HEIGHT_UPPER_RECT - HEIGHT_LOWER_RECT) / 2;
+
+    const int X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET = X_OFFSET_UPPER_RECT_OF_LEFT_SOCKET + (WIDTH_UPPER_RECT - WIDTH_LOWER_RECT) / 2;
+    const int Y_OFFSET_LOWER_RECT = Y_OFFSET_UPPER_RECT + HEIGHT_UPPER_RECT;
+
+
+    // Draw left socket
+    tft_lcd.fillRect(X_OFFSET_UPPER_RECT_OF_LEFT_SOCKET, Y_OFFSET_UPPER_RECT, WIDTH_UPPER_RECT, HEIGHT_UPPER_RECT, COLOR_GREY);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET, Y_OFFSET_LOWER_RECT, WIDTH_LOWER_RECT, HEIGHT_LOWER_RECT, COLOR_GREY);
+
+
+    const int X_OFFSET_UPPER_RECT_OF_RIGHT_SOCKET = tft_lcd.width()/2 + WIDTH_SEP_LINE/2 + X_OFFSET_UPPER_RECT_OF_LEFT_SOCKET;
+    const int X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET = X_OFFSET_UPPER_RECT_OF_RIGHT_SOCKET + (WIDTH_UPPER_RECT - WIDTH_LOWER_RECT) / 2;
+
+    // Draw right socket
+    tft_lcd.fillRect(X_OFFSET_UPPER_RECT_OF_RIGHT_SOCKET, Y_OFFSET_UPPER_RECT, WIDTH_UPPER_RECT, HEIGHT_UPPER_RECT, COLOR_GREY);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET, Y_OFFSET_LOWER_RECT, WIDTH_LOWER_RECT, HEIGHT_LOWER_RECT, COLOR_GREY);
+
+
+
+
+    tft_lcd.fillRect((tft_lcd.width() - WIDTH_SEP_LINE) / 2, 0, WIDTH_SEP_LINE, tft_lcd.height(), ST7735_WHITE);  // Split screen
+
+    // Draw sender pins:
+    // Draw pin 1 sender: white-orange
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_ORANGE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_ORANGE);
+    // Draw pin 2 sender: orange
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 1 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_ORANGE);
+    // Draw pin 3 sender: white-green
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_GREEN);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_GREEN);
+    // Draw pin 4 sender: blue
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 3 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_BLUE);
+    // Draw pin 5 sender: white-blue
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_BLUE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_BLUE);
+    // Draw pin 6 sender: green
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 5 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_GREEN);
+    // Draw pin 7 sender: white-brown
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, COLOR_BROWN);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, COLOR_BROWN);
+    // Draw pin 8 sender: brown
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_LEFT_SOCKET + 2 + 7 * 6, Y_OFFSET_UPPER_RECT, 4, 30, COLOR_BROWN);
+
+
+    // Draw receiver pins:
+    // Draw pin 1 receiver: brown
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2, Y_OFFSET_UPPER_RECT, 4, 30, COLOR_BROWN);
+    // Draw pin 2 receiver: white-brown
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 1 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, COLOR_BROWN);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 1 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 1 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, COLOR_BROWN);
+    // Draw pin 3 receiver: green
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 2 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_GREEN);
+    // Draw pin 4 receiver: white-blue
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 3 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_BLUE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 3 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 3 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_BLUE);
+    // Draw pin 5 receiver: blue
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 4 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_BLUE);
+    // Draw pin 6 receiver: white-green
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 5 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_GREEN);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 5 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 5 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_GREEN);
+    // Draw pin 7 receiver: orange
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 6 * 6, Y_OFFSET_UPPER_RECT, 4, 30, ST7735_ORANGE);
+    // Draw pin 8 receiver: white-orange
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 7 * 6, Y_OFFSET_UPPER_RECT     , 4, 10, ST7735_ORANGE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 7 * 6, Y_OFFSET_UPPER_RECT + 10, 4, 10, ST7735_WHITE);
+    tft_lcd.fillRect(X_OFFSET_LOWER_RECT_OF_RIGHT_SOCKET + 2 + 7 * 6, Y_OFFSET_UPPER_RECT + 20, 4, 10, ST7735_ORANGE);
+}

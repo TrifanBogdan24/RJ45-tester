@@ -20,8 +20,9 @@ caruia i-am adus o serie de îmbunătățiri.
 Dispozitivul proiectat permite testarea cablurilor de rețea de tip **RJ45**, oferind feedback vizual și auditiv privind corectitudinea conexiunilor dintre pini.
 
 Prin simpla apăsare a unui buton, utilizatorul poate selecta tipul de cablu testat:
-  - **Straight-through** – pentru conectarea dispozitivelor aflate pe //layere diferite// (ex: PC – switch)
-  - **Crossover** – pentru conectarea dispozitivelor de //același layer// (ex: PC – PC)
+  - **Straight-through** - pentru conectarea dispozitivelor aflate pe //layere diferite// (ex: PC – switch)
+  - **Crossover** - pentru conectarea dispozitivelor de //același layer// (ex: PC – PC)
+  - **Rollover** (numit si //cablu de consola//) - pentru a conecta un dispozitiv la un echipament de retea si pentru a avea acces direct la CLI
 
 După selectare, pe ecranul principal (128x160 SPI) este afișată o imagine cu ordinea corectă a firelor pentru tipul respectiv de cablu.
 
@@ -40,7 +41,7 @@ Testarea efectivă presupune 2 verificări:
 
 Testarea poate fi oprită forțat, în orice moment, prin apăsarea unui buton.
 
-În timp ce display-ul pe SPI (de rezoluție mai mare) afișează ordinea firelor în mufa RJ-45, LCD-ul cu modul I2C va scrie pe ecran tipul de cablu **straight-through**\**crossover** și indexul pinului de pe **sender** de pe care se trimit semnale (ex: //Testing pin 1...8//), sau mesajul //Testing all pins//.
+În timp ce display-ul pe SPI (de rezoluție mai mare) afișează ordinea firelor în mufa RJ-45, LCD-ul cu modul I2C va scrie pe ecran tipul de cablu **straight-through**\**crossover**\**rollover** și indexul pinului de pe **sender** de pe care se trimit semnale (ex: //Testing pin 1...8//), sau mesajul //Testing all pins//.
 
 ==== De ce este util? ====
 
@@ -280,7 +281,7 @@ Repo GitHub: <https://github.com/TrifanBogdan24/RJ45-tester> - codul sursa se ga
 
 
 Am asociat fiecarui buton cate o intrerupere:
-  * Butonul **albastru** - intreruperea **INT0** - schimba tipul de cablare (crossover/straigh-through)
+  * Butonul **albastru** - intreruperea **INT0** - schimba tipul de cablare (crossover/straigh-through/rollover)
   * Butonul **rosu** - intreruperea **INT1** - opreste fortat rularea testului
   * Butonul **alb** - intreruperea **PCINT20** (din **PCINT2_vect**)  - porneste algoritmul de testare:
 
