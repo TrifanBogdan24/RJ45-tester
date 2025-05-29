@@ -385,6 +385,11 @@ tft.fillRect(x_upper_left_corner, y_upper_left_corner, width, height, ST77XX_<co
 ![img](./images/rj45-sw-code-img-10.png)
 
 
+Repo GitHub: <https://github.com/TrifanBogdan24/RJ45-tester>
+
+YouTube: <https://www.youtube.com/shorts/1yIg8dGbAU8>
+
+
 ## Concluzii
 
 - Dat fiind faptul ca nu am avut succes la afisarea pe ecranul 160x128 a unor imagini **.bmp** luate de pe un card microSD,
