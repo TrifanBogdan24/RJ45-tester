@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
-#include <SD.h>
 #include "spi_lcd.h"
 
 
