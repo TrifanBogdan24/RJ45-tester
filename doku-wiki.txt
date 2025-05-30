@@ -366,7 +366,18 @@ Descrierile functiilor:
 
 Repo GitHub: https://github.com/TrifanBogdan24/RJ45-tester
 
-YouTube: https://www.youtube.com/shorts/1yIg8dGbAU8
+[[https://www.youtube.com/embed/1yIg8dGbAU8|link]] YouTube:
+
+
+
+<html>
+<iframe width="400" height="600" 
+        src="https://www.youtube.com/embed/1yIg8dGbAU8" 
+        frameborder="0" 
+        allow="autoplay; encrypted-media" 
+        allowfullscreen>
+</iframe>
+</html>
 
 
 ===== Concluzii =====
