@@ -143,7 +143,7 @@ void write_full_cable_mode_on_i2c_lcd()
 */
 void write_to_sender_socket()
 {
-    // LOW pe pinul D7 -> register latch
+    // HIGH pe pinul D7 -> register latch
     PORTD |= (1 << PD7);
   
     // Trimite in ordine inversa, deoarece shift-registrul foloseste LSB first
@@ -158,11 +158,11 @@ void write_to_sender_socket()
   
 
         // Creez un front de ceas (rising + falling edge):
-       PORTB &= ~(1 << PB0);  // HIGH pe D8 (register clock)
-       PORTB |= (1 << PB0);   // LOW pe D8 (register clock)
+       PORTB &= ~(1 << PB0);  // LOW pe D8 (register clock)
+       PORTB |= (1 << PB0);   // HIGH pe D8 (register clock)
     }
   
-    // HIGH pe pinul D7 -> register latch
+    // LOW pe pinul D7 -> register latch
     PORTD &= ~(1 << PD7);
 }
 
